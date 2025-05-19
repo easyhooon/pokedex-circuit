@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorites_detail_title">Detail</string>
+    <string name="remove_favorite">즐겨찾기 삭제</string>
+    <string name="remove_success">삭제 성공</string>
+    <string name="remove_failed">존재하지 않는 데이터</string>
+    <string name="weight">몸무게</string>
+    <string name="height">키</string>
+    <string name="default_info">기본 정보</string>
+    <string name="type">타입</string>
+</resources>
