@@ -20,6 +20,10 @@ android {
     }
 }
 
+ksp {
+    arg("circuit.codegen.mode", "hilt")
+}
+
 dependencies {
     implementations(
         projects.core.common,
@@ -39,5 +43,9 @@ dependencies {
         libs.androidx.startup,
         libs.timber,
         libs.coil.compose,
+
+        libs.bundles.circuit
     )
+    api(libs.circuit.codegen.annotation)
+    ksp(libs.circuit.codegen.ksp)
 }

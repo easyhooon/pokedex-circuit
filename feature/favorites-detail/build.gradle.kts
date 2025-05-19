@@ -13,6 +13,10 @@ android {
     }
 }
 
+ksp {
+    arg("circuit.codegen.mode", "hilt")
+}
+
 dependencies {
     implementations(
         libs.kotlinx.collections.immutable,

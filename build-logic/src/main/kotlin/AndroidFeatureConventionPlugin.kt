@@ -1,5 +1,7 @@
+import com.easyhooon.pokedex.convention.api
 import com.easyhooon.pokedex.convention.applyPlugins
 import com.easyhooon.pokedex.convention.implementation
+import com.easyhooon.pokedex.convention.ksp
 import com.easyhooon.pokedex.convention.libs
 import com.easyhooon.pokedex.convention.project
 import org.gradle.kotlin.dsl.dependencies
@@ -23,6 +25,10 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(libs.androidx.hilt.navigation.compose)
             implementation(libs.compose.effects)
             implementation(libs.bundles.androidx.lifecycle)
+            implementation(libs.bundles.circuit)
+
+            api(libs.circuit.codegen.annotation)
+            ksp(libs.circuit.codegen.ksp)
         }
     },
 )

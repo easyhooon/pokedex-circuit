@@ -9,6 +9,10 @@ android {
     namespace = "com.easyhooon.pokedex.feature.favorites"
 }
 
+ksp {
+    arg("circuit.codegen.mode", "hilt")
+}
+
 dependencies {
     implementations(
         libs.kotlinx.collections.immutable,

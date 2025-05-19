@@ -13,6 +13,10 @@ android {
     }
 }
 
+ksp {
+    arg("circuit.codegen.mode", "hilt")
+}
+
 dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.savedstate.android)
     implementations(
