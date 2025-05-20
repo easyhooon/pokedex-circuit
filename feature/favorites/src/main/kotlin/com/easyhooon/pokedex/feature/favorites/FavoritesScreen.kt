@@ -4,22 +4,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.easyhooon.pokedex.core.common.ObserveAsEvents
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.LoadingWheel
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
@@ -27,51 +21,40 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.favorites.component.FavoritesPokemonItem
-import com.easyhooon.pokedex.feature.favorites.preview.FavoritesPreviewParameterProvider
-import com.easyhooon.pokedex.feature.favorites.viewmodel.FavoritesUiAction
-import com.easyhooon.pokedex.feature.favorites.viewmodel.FavoritesUiEvent
-import com.easyhooon.pokedex.feature.favorites.viewmodel.FavoritesUiState
-import com.easyhooon.pokedex.feature.favorites.viewmodel.FavoritesViewModel
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
-@Composable
-internal fun FavoritesRoute(
-    padding: PaddingValues,
-    navigateToFavoritesDetail: (PokemonDetailModel) -> Unit,
-    viewModel: FavoritesViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val favoritesPokemonList by viewModel.favoritesPokemonList.collectAsStateWithLifecycle(initialValue = emptyList())
+@Parcelize
+data object FavoritesScreen : Screen {
+    data class State(
+        val isLoading: Boolean = false,
+        val favoritesPokemonList: ImmutableList<PokemonDetailModel> = persistentListOf(),
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is FavoritesUiEvent.NavigateToFavoritesDetail -> navigateToFavoritesDetail(event.pokemon)
-        }
+    sealed interface Event : CircuitUiEvent {
+        data class OnPokemonItemClick(val pokemon: PokemonDetailModel) : Event
     }
-
-    FavoritesScreen(
-        padding = padding,
-        uiState = uiState,
-        favoritesPokemonList = favoritesPokemonList.toImmutableList(),
-        onAction = viewModel::onHomeUiAction,
-    )
 }
 
+@CircuitInject(FavoritesScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun FavoritesScreen(
-    padding: PaddingValues,
-    uiState: FavoritesUiState,
-    favoritesPokemonList: ImmutableList<PokemonDetailModel>,
-    onAction: (FavoritesUiAction) -> Unit,
+internal fun Favorites(
+    state: FavoritesScreen.State,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             PokedexTopAppBar(
                 navigationType = TopAppBarNavigationType.None,
@@ -80,13 +63,10 @@ internal fun FavoritesScreen(
                 containerColor = Color.Transparent,
             )
 
-            FavoritesContent(
-                favoritesPokemonList = favoritesPokemonList,
-                onAction = onAction,
-            )
+            FavoritesContent(state = state)
         }
 
-        if (uiState.isLoading) {
+        if (state.isLoading) {
             LoadingWheel(modifier = Modifier.fillMaxSize())
         }
     }
@@ -94,8 +74,7 @@ internal fun FavoritesScreen(
 
 @Composable
 internal fun FavoritesContent(
-    favoritesPokemonList: ImmutableList<PokemonDetailModel>,
-    onAction: (FavoritesUiAction) -> Unit,
+    state: FavoritesScreen.State,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -105,14 +84,14 @@ internal fun FavoritesContent(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(
-            count = favoritesPokemonList.size,
-            key = { index -> favoritesPokemonList[index].id },
+            count = state.favoritesPokemonList.size,
+            key = { index -> state.favoritesPokemonList[index].id },
         ) { index ->
-            val pokemon = favoritesPokemonList[index]
+            val pokemon = state.favoritesPokemonList[index]
             FavoritesPokemonItem(
                 pokemon = pokemon,
                 onItemClick = {
-                    onAction(FavoritesUiAction.OnItemClick(pokemon))
+                    state.eventSink(FavoritesScreen.Event.OnPokemonItemClick(pokemon))
                 },
             )
         }
@@ -121,16 +100,10 @@ internal fun FavoritesContent(
 
 @DevicePreview
 @Composable
-private fun FavoritesScreenPreview(
-    @PreviewParameter(FavoritesPreviewParameterProvider::class)
-    favoritesUiState: FavoritesUiState,
-) {
+private fun FavoritesPreview() {
     PokedexTheme {
-        FavoritesScreen(
-            padding = PaddingValues(),
-            uiState = favoritesUiState,
-            favoritesPokemonList = emptyList<PokemonDetailModel>().toImmutableList(),
-            onAction = {},
+        Favorites(
+            state = FavoritesScreen.State(eventSink = {}),
         )
     }
 }

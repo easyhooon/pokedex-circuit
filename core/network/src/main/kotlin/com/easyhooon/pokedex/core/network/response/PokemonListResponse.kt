@@ -1,10 +1,8 @@
 package com.easyhooon.pokedex.core.network.response
 
-import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@InternalSerializationApi
 @Serializable
 data class PokemonListResponse(
     @SerialName("count")
@@ -17,7 +15,6 @@ data class PokemonListResponse(
     val results: List<Pokemon>,
 )
 
-@InternalSerializationApi
 @Serializable
 data class Pokemon(
     @SerialName("name")

@@ -29,7 +29,6 @@ include(
     ":core:database",
     ":core:designsystem",
     ":core:model",
-    ":core:navigation",
     ":core:network",
 
     ":feature:favorites",

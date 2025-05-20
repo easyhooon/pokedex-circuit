@@ -18,9 +18,6 @@ dependencies {
 
         libs.kotlinx.collections.immutable,
 
-        libs.androidx.hilt.navigation.compose,
-
         libs.timber,
-        libs.bundles.androidx.lifecycle,
     )
 }

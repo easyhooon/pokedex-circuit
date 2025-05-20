@@ -9,11 +9,9 @@ import com.easyhooon.pokedex.core.data.util.Constants.PAGING_SIZE
 import com.easyhooon.pokedex.core.data.util.Constants.STARTING_PAGE_INDEX
 import com.easyhooon.pokedex.core.network.response.Pokemon
 import com.easyhooon.pokedex.core.network.service.PokemonService
-import kotlinx.serialization.InternalSerializationApi
 import timber.log.Timber
 import java.io.IOException
 
-@OptIn(InternalSerializationApi::class)
 class PokemonPagingSource(
     private val service: PokemonService,
 ) : PagingSource<Int, Pokemon>() {

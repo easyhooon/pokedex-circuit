@@ -1,12 +1,9 @@
 package com.easyhooon.pokedex.list_detail
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,76 +16,72 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.LoadingWheel
 import com.easyhooon.pokedex.core.designsystem.component.NetworkErrorDialog
 import com.easyhooon.pokedex.core.designsystem.component.NetworkImage
 import com.easyhooon.pokedex.core.designsystem.component.PokedexOutlinedButton
+import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
 import com.easyhooon.pokedex.core.designsystem.component.PokemonTypeChip
 import com.easyhooon.pokedex.core.designsystem.component.ServerErrorDialog
 import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
+import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.list_detail.R
-import com.easyhooon.pokedex.list_detail.preview.ListDetailPreviewParameterProvider
-import com.easyhooon.pokedex.list_detail.viewmodel.ErrorType
-import com.easyhooon.pokedex.core.common.ObserveAsEvents
-import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiAction
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiEvent
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiState
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailViewModel
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
-@Composable
-internal fun ListDetailRoute(
-    padding: PaddingValues,
-    popBackStack: () -> Unit,
-    viewModel: ListDetailViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+@Parcelize
+data class ListDetailScreen(
+    val name: String,
+) : Screen {
+    data class State(
+        val isLoading: Boolean = false,
+        val name: String = "",
+        val pokemon: PokemonDetailModel = PokemonDetailModel(),
+        val isNetworkErrorDialogVisible: Boolean = false,
+        val isServerErrorDialogVisible: Boolean = false,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is ListDetailUiEvent.NavigateBack -> popBackStack()
-            is ListDetailUiEvent.ShowToast -> Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-        }
+    sealed interface Event : CircuitUiEvent {
+        data object OnBackClick : Event
+        data object OnFavoritesButtonClick : Event
+        data class OnRetryButtonClick(val errorType: ErrorType) : Event
     }
-
-    ListDetailScreen(
-        padding = padding,
-        uiState = uiState,
-        onAction = viewModel::onAction,
-    )
 }
 
+enum class ErrorType {
+    NETWORK,
+    SERVER,
+}
+
+@CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun ListDetailScreen(
-    padding: PaddingValues,
-    uiState: ListDetailUiState,
-    onAction: (ListDetailUiAction) -> Unit,
+internal fun ListDetail(
+    state: ListDetailScreen.State,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             PokedexTopAppBar(
                 navigationType = TopAppBarNavigationType.Back,
@@ -96,41 +89,39 @@ internal fun ListDetailScreen(
                 navigationIconRes = designR.drawable.ic_arrow_back_gray,
                 containerColor = Color.Transparent,
                 onNavigationClick = {
-                    onAction(ListDetailUiAction.OnBackClick)
+                    state.eventSink(ListDetailScreen.Event.OnBackClick)
                 },
             )
 
-            ListDetailContent(
-                uiState = uiState,
-                onAction = onAction,
-                modifier = Modifier.padding(bottom = 116.dp),
-            )
+            ListDetailContent(state = state)
         }
 
-        if (uiState.isLoading) {
+        if (state.isLoading) {
             LoadingWheel(modifier = Modifier.fillMaxSize())
         }
 
-        if (uiState.isServerErrorDialogVisible) {
-            ServerErrorDialog(
-                onRetryClick = { onAction(ListDetailUiAction.OnRetryClick(ErrorType.SERVER)) },
+        if (state.isNetworkErrorDialogVisible) {
+            NetworkErrorDialog(
+                onRetryClick = {
+                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.NETWORK))
+                },
             )
         }
 
-        if (uiState.isNetworkErrorDialogVisible) {
-            NetworkErrorDialog(
-                onRetryClick = { onAction(ListDetailUiAction.OnRetryClick(ErrorType.NETWORK)) },
+        if (state.isServerErrorDialogVisible) {
+            ServerErrorDialog(
+                onRetryClick = {
+                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.SERVER))
+                },
             )
         }
     }
 }
 
 @Suppress("ImplicitDefaultLocale")
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun ListDetailContent(
-    uiState: ListDetailUiState,
-    onAction: (ListDetailUiAction) -> Unit,
+    state: ListDetailScreen.State,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -149,13 +140,13 @@ internal fun ListDetailContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             NetworkImage(
-                imgUrl = uiState.pokemon.imageUrl,
-                contentDescription = "${uiState.pokemon.name} Image",
+                imgUrl = state.pokemon.imageUrl,
+                contentDescription = "${state.pokemon.name} Image",
                 loadingPlaceholder = ImageVector.vectorResource(designR.drawable.ic_loading_placeholder),
                 failurePlaceholder = ImageVector.vectorResource(designR.drawable.ic_failure_placeholder),
             )
             Text(
-                text = uiState.pokemon.name,
+                text = state.pokemon.name,
                 style = Large20_SemiBold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -167,7 +158,7 @@ internal fun ListDetailContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FlowRow {
-            uiState.pokemon.types.forEach { type ->
+            state.pokemon.types.forEach { type ->
                 PokemonTypeChip(
                     typeName = type.type.name,
                 )
@@ -186,7 +177,7 @@ internal fun ListDetailContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = String.format("%.1f m", uiState.pokemon.height * 0.1f),
+                text = String.format("%.1f m", state.pokemon.height * 0.1f),
                 style = Medium16_Mid,
             )
         }
@@ -198,14 +189,14 @@ internal fun ListDetailContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = String.format("%.1f kg", uiState.pokemon.weight * 0.1f),
+                text = String.format("%.1f kg", state.pokemon.weight * 0.1f),
                 style = Medium16_Mid,
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
         PokedexOutlinedButton(
             onClick = {
-                onAction(ListDetailUiAction.OnButtonClick(uiState.pokemon))
+                state.eventSink(ListDetailScreen.Event.OnFavoritesButtonClick)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -231,15 +222,10 @@ internal fun ListDetailContent(
 
 @DevicePreview
 @Composable
-private fun ListDetailScreenPreview(
-    @PreviewParameter(ListDetailPreviewParameterProvider::class)
-    listUiState: ListDetailUiState,
-) {
+private fun ListDetailScreenPreview() {
     PokedexTheme {
-        ListDetailScreen(
-            padding = PaddingValues(),
-            uiState = listUiState,
-            onAction = {},
+        ListDetail(
+            state = ListDetailScreen.State(eventSink = {}),
         )
     }
 }

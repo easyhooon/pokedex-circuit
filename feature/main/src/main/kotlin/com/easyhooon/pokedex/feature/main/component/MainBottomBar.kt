@@ -34,9 +34,36 @@ import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.designsystem.theme.Small14_Mid
+import com.easyhooon.pokedex.feature.favorites.FavoritesScreen
+import com.easyhooon.pokedex.feature.list.ListScreen
 import com.easyhooon.pokedex.feature.main.MainTab
+import com.slack.circuit.backstack.SaveableBackStack
+import com.slack.circuit.runtime.Navigator
+import com.slack.circuit.runtime.popUntil
+import com.slack.circuit.runtime.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+
+@Composable
+internal fun MainBottomBar(
+    navigator: Navigator,
+    backStack: SaveableBackStack,
+    modifier: Modifier = Modifier,
+) {
+    val visible = shouldShowBottomBar(backStack)
+    val currentTab = getCurrentTab(backStack)
+    val tabs = MainTab.entries.toImmutableList()
+
+    MainBottomBar(
+        visible = visible,
+        tabs = tabs,
+        currentTab = currentTab,
+        onTabSelected = { tab ->
+            navigator.popUntilOrGoTo(tab.screen)
+        },
+        modifier = modifier,
+    )
+}
 
 @Composable
 internal fun MainBottomBar(
@@ -44,11 +71,13 @@ internal fun MainBottomBar(
     tabs: ImmutableList<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideIn { IntOffset(0, it.height) },
         exit = fadeOut() + slideOut { IntOffset(0, it.height) },
+        modifier = modifier,
     ) {
         Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
             Column {
@@ -126,5 +155,27 @@ private fun MainBottomBarPreview() {
             currentTab = MainTab.LIST,
             onTabSelected = {},
         )
+    }
+}
+
+fun Navigator.popUntilOrGoTo(screen: Screen) {
+    if (screen in peekBackStack()) {
+        popUntil { it == screen }
+    } else {
+        goTo(screen)
+    }
+}
+
+@Composable
+private fun shouldShowBottomBar(backStack: SaveableBackStack): Boolean {
+    val currentScreen = backStack.topRecord?.screen
+    return currentScreen is ListScreen || currentScreen is FavoritesScreen
+}
+
+@Composable
+private fun getCurrentTab(backStack: SaveableBackStack): MainTab? {
+    val currentScreen = backStack.topRecord?.screen
+    return currentScreen?.let { screen ->
+        MainTab.entries.find { it.screen::class == currentScreen::class }
     }
 }

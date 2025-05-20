@@ -3,6 +3,7 @@
 plugins {
     alias(libs.plugins.pokedex.android.feature)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -19,6 +20,8 @@ ksp {
 
 dependencies {
     implementations(
+        projects.feature.listDetail,
+
         libs.kotlinx.collections.immutable,
 
         libs.timber,

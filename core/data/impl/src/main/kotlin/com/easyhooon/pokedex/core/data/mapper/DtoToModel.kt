@@ -8,9 +8,7 @@ import com.easyhooon.pokedex.core.network.response.Pokemon
 import com.easyhooon.pokedex.core.network.response.PokemonResponse
 import com.easyhooon.pokedex.core.network.response.PokemonType
 import com.easyhooon.pokedex.core.network.response.PokemonTypeSlot
-import kotlinx.serialization.InternalSerializationApi
 
-@OptIn(InternalSerializationApi::class)
 internal fun Pokemon.toModel(): PokemonModel {
     return PokemonModel(
         name = name,
@@ -18,7 +16,6 @@ internal fun Pokemon.toModel(): PokemonModel {
     )
 }
 
-@OptIn(InternalSerializationApi::class)
 internal fun PokemonResponse.toModel(): PokemonDetailModel {
     return PokemonDetailModel(
         id = id,
@@ -30,7 +27,6 @@ internal fun PokemonResponse.toModel(): PokemonDetailModel {
     )
 }
 
-@OptIn(InternalSerializationApi::class)
 internal fun PokemonTypeSlot.toModel(): PokemonTypeSlotModel {
     return PokemonTypeSlotModel(
         slot = slot,
@@ -38,7 +34,6 @@ internal fun PokemonTypeSlot.toModel(): PokemonTypeSlotModel {
     )
 }
 
-@OptIn(InternalSerializationApi::class)
 internal fun PokemonType.toModel(): PokemonTypeModel {
     return PokemonTypeModel(
         name = name,

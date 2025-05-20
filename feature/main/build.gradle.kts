@@ -24,7 +24,6 @@ dependencies {
 
         libs.androidx.activity.compose,
         libs.androidx.splash,
-        libs.androidx.navigation.compose,
 
         libs.timber,
     )

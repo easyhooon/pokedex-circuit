@@ -32,7 +32,6 @@ dependencies {
         projects.core.database,
         projects.core.designsystem,
         projects.core.model,
-        projects.core.navigation,
         projects.core.network,
 
         projects.feature.favorites,
@@ -44,7 +43,7 @@ dependencies {
         libs.timber,
         libs.coil.compose,
 
-        libs.bundles.circuit
+        libs.bundles.circuit,
     )
     api(libs.circuit.codegen.annotation)
     ksp(libs.circuit.codegen.ksp)

@@ -1,12 +1,9 @@
 package com.easyhooon.pokedex.favorites_detail
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,20 +16,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.easyhooon.pokedex.core.common.ObserveAsEvents
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.LoadingWheel
 import com.easyhooon.pokedex.core.designsystem.component.NetworkImage
@@ -43,49 +34,43 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.favorites_detail.preview.FavoritesDetailPreviewParameterProvider
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiAction
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiEvent
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiState
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailViewModel
+import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.favorites_detail.R
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
-@Composable
-internal fun FavoritesDetailRoute(
-    padding: PaddingValues,
-    popBackStack: () -> Unit,
-    viewModel: FavoritesDetailViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+@Parcelize
+data class FavoritesDetailScreen(
+    val pokemon: PokemonDetailModel,
+) : Screen {
+    data class State(
+        val isLoading: Boolean = false,
+        val pokemon: PokemonDetailModel = PokemonDetailModel(),
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is FavoritesDetailUiEvent.NavigateBack -> popBackStack()
-            is FavoritesDetailUiEvent.ShowToast -> Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-        }
+    sealed interface Event : CircuitUiEvent {
+        data object OnBackClick : Event
+        data object OnFavoritesButtonClick : Event
     }
-
-    FavoritesDetailScreen(
-        padding = padding,
-        uiState = uiState,
-        onAction = viewModel::onAction,
-    )
 }
 
+@CircuitInject(FavoritesDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun FavoritesDetailScreen(
-    padding: PaddingValues,
-    uiState: FavoritesDetailUiState,
-    onAction: (FavoritesDetailUiAction) -> Unit,
+internal fun FavoritesDetail(
+    state: FavoritesDetailScreen.State,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             PokedexTopAppBar(
                 navigationType = TopAppBarNavigationType.Back,
@@ -93,28 +78,23 @@ internal fun FavoritesDetailScreen(
                 navigationIconRes = designR.drawable.ic_arrow_back_gray,
                 containerColor = Color.Transparent,
                 onNavigationClick = {
-                    onAction(FavoritesDetailUiAction.OnBackClick)
+                    state.eventSink(FavoritesDetailScreen.Event.OnBackClick)
                 },
             )
 
-            FavoritesDetailContent(
-                uiState = uiState,
-                onAction = onAction,
-            )
+            FavoritesDetailContent(state = state)
         }
 
-        if (uiState.isLoading) {
+        if (state.isLoading) {
             LoadingWheel(modifier = Modifier.fillMaxSize())
         }
     }
 }
 
 @Suppress("ImplicitDefaultLocale")
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun FavoritesDetailContent(
-    uiState: FavoritesDetailUiState,
-    onAction: (FavoritesDetailUiAction) -> Unit,
+    state: FavoritesDetailScreen.State,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -133,13 +113,13 @@ internal fun FavoritesDetailContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             NetworkImage(
-                imgUrl = uiState.pokemon.imageUrl,
-                contentDescription = "${uiState.pokemon.name} Image",
+                imgUrl = state.pokemon.imageUrl,
+                contentDescription = "${state.pokemon.name} Image",
                 loadingPlaceholder = ImageVector.vectorResource(designR.drawable.ic_loading_placeholder),
                 failurePlaceholder = ImageVector.vectorResource(designR.drawable.ic_failure_placeholder),
             )
             Text(
-                text = uiState.pokemon.name,
+                text = state.pokemon.name,
                 style = Large20_SemiBold,
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -151,7 +131,7 @@ internal fun FavoritesDetailContent(
         )
         Spacer(modifier = Modifier.height(8.dp))
         FlowRow {
-            uiState.pokemon.types.forEach { type ->
+            state.pokemon.types.forEach { type ->
                 PokemonTypeChip(
                     typeName = type.type.name,
                 )
@@ -170,7 +150,7 @@ internal fun FavoritesDetailContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = String.format("%.1f m", uiState.pokemon.height * 0.1f),
+                text = String.format("%.1f m", state.pokemon.height * 0.1f),
                 style = Medium16_Mid,
             )
         }
@@ -182,14 +162,14 @@ internal fun FavoritesDetailContent(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = String.format("%.1f kg", uiState.pokemon.weight * 0.1f),
+                text = String.format("%.1f kg", state.pokemon.weight * 0.1f),
                 style = Medium16_Mid,
             )
         }
         Spacer(modifier = Modifier.height(32.dp))
         PokedexOutlinedButton(
             onClick = {
-                onAction(FavoritesDetailUiAction.OnFavoritesButtonClick(uiState.pokemon))
+                state.eventSink(FavoritesDetailScreen.Event.OnFavoritesButtonClick)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -215,15 +195,10 @@ internal fun FavoritesDetailContent(
 
 @DevicePreview
 @Composable
-private fun FavoritesDetailScreenPreview(
-    @PreviewParameter(FavoritesDetailPreviewParameterProvider::class)
-    favoritesUiState: FavoritesDetailUiState,
-) {
+private fun FavoritesDetailScreenPreview() {
     PokedexTheme {
-        FavoritesDetailScreen(
-            padding = PaddingValues(),
-            uiState = favoritesUiState,
-            onAction = {},
+        FavoritesDetail(
+            state = FavoritesDetailScreen.State(eventSink = {}),
         )
     }
 }

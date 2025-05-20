@@ -27,7 +27,7 @@ import com.easyhooon.pokedex.core.designsystem.R as designR
 @Composable
 internal fun PokemonItem(
     pokemon: PokemonModel,
-    onItemClick: (String) -> Unit,
+    onPokemonItemClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -38,7 +38,7 @@ internal fun PokemonItem(
         Column(
             modifier = modifier
                 .padding(horizontal = 8.dp)
-                .clickable { onItemClick(pokemon.name) },
+                .clickable { onPokemonItemClick(pokemon.name) },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -75,6 +75,6 @@ private fun PokemonItemPreview() {
             name = "ivysaur",
             url = "https://pokeapi.co/api/v2/pokemon/2/",
         ),
-        onItemClick = {},
+        onPokemonItemClick = {},
     )
 }

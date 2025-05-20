@@ -1,42 +1,30 @@
 package com.easyhooon.pokedex.feature.main
 
-import androidx.compose.runtime.Composable
-import com.easyhooon.pokedex.core.navigation.MainTabRoute
-import com.easyhooon.pokedex.core.navigation.Route
+import androidx.annotation.DrawableRes
+import com.easyhooon.pokedex.feature.favorites.FavoritesScreen
+import com.easyhooon.pokedex.feature.list.ListScreen
+import com.slack.circuit.runtime.screen.Screen
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
 internal enum class MainTab(
-    val iconResId: Int,
-    val selectedIconResId: Int,
+    @DrawableRes val iconResId: Int,
+    @DrawableRes val selectedIconResId: Int,
     internal val contentDescription: String,
     val label: String,
-    val route: MainTabRoute,
+    val screen: Screen,
 ) {
     LIST(
         iconResId = R.drawable.ic_list,
         selectedIconResId = R.drawable.ic_selected_list,
         contentDescription = "List Icon",
         label = "목록",
-        route = MainTabRoute.List,
+        screen = ListScreen,
     ),
     FAVORITES(
         iconResId = R.drawable.ic_favorites,
         selectedIconResId = designR.drawable.ic_selected_favorites,
         contentDescription = "Favorites Icon",
         label = "즐겨찾기",
-        route = MainTabRoute.Favorites,
+        screen = FavoritesScreen,
     ),
-    ;
-
-    companion object {
-        @Composable
-        fun find(predicate: @Composable (MainTabRoute) -> Boolean): MainTab? {
-            return entries.find { predicate(it.route) }
-        }
-
-        @Composable
-        fun contains(predicate: @Composable (Route) -> Boolean): Boolean {
-            return entries.map { it.route }.any { predicate(it) }
-        }
-    }
 }

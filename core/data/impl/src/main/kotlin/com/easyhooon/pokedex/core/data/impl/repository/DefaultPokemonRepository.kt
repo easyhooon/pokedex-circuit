@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.easyhooon.pokedex.core.common.InsertFavoriteResult
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
+import com.easyhooon.pokedex.core.data.impl.paging.PokemonPagingSource
 import com.easyhooon.pokedex.core.data.mapper.toEntity
 import com.easyhooon.pokedex.core.data.mapper.toModel
 import com.easyhooon.pokedex.core.data.util.Constants
@@ -17,17 +18,15 @@ import com.easyhooon.pokedex.core.network.service.PokemonService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.serialization.InternalSerializationApi
 import javax.inject.Inject
 
 internal class DefaultPokemonRepository @Inject constructor(
     private val service: PokemonService,
     private val dao: FavoritesPokemonDao,
 ) : PokemonRepository {
-    @OptIn(InternalSerializationApi::class)
     override fun getPokemonList(): Flow<PagingData<PokemonModel>> {
         val pagingSourceFactory = {
-            com.easyhooon.pokedex.core.data.impl.paging.PokemonPagingSource(service)
+            PokemonPagingSource(service)
         }
         val pagingDataFlow = Pager(
             config = PagingConfig(
@@ -52,7 +51,6 @@ internal class DefaultPokemonRepository @Inject constructor(
         }
     }
 
-    @OptIn(InternalSerializationApi::class)
     override suspend fun getPokemonDetail(name: String) = runSuspendCatching {
         service.getPokemonDetail(name).toModel()
     }

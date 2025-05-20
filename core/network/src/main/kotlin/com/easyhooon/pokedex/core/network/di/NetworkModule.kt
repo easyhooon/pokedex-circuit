@@ -1,7 +1,7 @@
 package com.easyhooon.pokedex.core.network.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.easyhooon.pokedex.core.network.BuildConfig
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,7 +38,7 @@ internal object NetworkModule {
         return HttpLoggingInterceptor { message ->
             Timber.tag("ApiService").d(message)
         }.apply {
-            level = if (com.easyhooon.pokedex.core.network.BuildConfig.DEBUG) {
+            level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {
                 HttpLoggingInterceptor.Level.NONE

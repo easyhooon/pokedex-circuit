@@ -1,11 +1,9 @@
 package com.easyhooon.pokedex.feature.list
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -15,15 +13,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.easyhooon.pokedex.core.common.ObserveAsEvents
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
 import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
@@ -33,48 +28,39 @@ import com.easyhooon.pokedex.feature.list.component.LoadErrorScreen
 import com.easyhooon.pokedex.feature.list.component.LoadStateFooter
 import com.easyhooon.pokedex.feature.list.component.LoadingScreen
 import com.easyhooon.pokedex.feature.list.component.PokemonItem
-import com.easyhooon.pokedex.feature.list.viewmodel.ListUiAction
-import com.easyhooon.pokedex.feature.list.viewmodel.ListUiEvent
-import com.easyhooon.pokedex.feature.list.viewmodel.ListViewModel
+import com.slack.circuit.codegen.annotations.CircuitInject
+import com.slack.circuit.runtime.CircuitUiEvent
+import com.slack.circuit.runtime.CircuitUiState
+import com.slack.circuit.runtime.screen.Screen
+import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
-@Composable
-internal fun ListRoute(
-    padding: PaddingValues,
-    navigateToListDetail: (String) -> Unit,
-    viewModel: ListViewModel = hiltViewModel(),
-) {
-    val pokemonList = viewModel.pokemonList.collectAsLazyPagingItems()
-    val context = LocalContext.current
+@Parcelize
+data object ListScreen : Screen {
+    data class State(
+        val pokemonList: LazyPagingItems<PokemonModel>,
+        val eventSink: (Event) -> Unit,
+    ) : CircuitUiState
 
-    ObserveAsEvents(flow = viewModel.uiEvent) { event ->
-        when (event) {
-            is ListUiEvent.NavigateToListDetail -> navigateToListDetail(event.name)
-            is ListUiEvent.ShowToast -> Toast.makeText(context, event.message.asString(context), Toast.LENGTH_SHORT).show()
-            is ListUiEvent.RefetchPokemonList -> pokemonList.retry()
-        }
+    sealed interface Event : CircuitUiEvent {
+        data object OnRetryButtonClick : Event
+        data class OnPokemonItemClick(val name: String) : Event
     }
-
-    ListScreen(
-        padding = padding,
-        pokemonList = pokemonList,
-        onAction = viewModel::onAction,
-    )
 }
 
+@CircuitInject(ListScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun ListScreen(
-    padding: PaddingValues,
-    pokemonList: LazyPagingItems<PokemonModel>,
-    onAction: (ListUiAction) -> Unit,
+internal fun List(
+    state: ListScreen.State,
+    modifier: Modifier = Modifier,
 ) {
     Box {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(padding),
+                .background(MaterialTheme.colorScheme.background),
         ) {
             PokedexTopAppBar(
                 navigationType = TopAppBarNavigationType.None,
@@ -83,22 +69,18 @@ internal fun ListScreen(
                 containerColor = Color.Transparent,
             )
 
-            ListContent(
-                pokemonList = pokemonList,
-                onAction = onAction,
-            )
+            ListContent(state = state)
         }
     }
 }
 
 @Composable
 internal fun ListContent(
-    pokemonList: LazyPagingItems<PokemonModel>,
-    onAction: (ListUiAction) -> Unit,
+    state: ListScreen.State,
     modifier: Modifier = Modifier,
 ) {
-    val isLoading = pokemonList.loadState.refresh is LoadState.Loading
-    val isError = pokemonList.loadState.refresh is LoadState.Error
+    val isLoading = state.pokemonList.loadState.refresh is LoadState.Loading
+    val isError = state.pokemonList.loadState.refresh is LoadState.Error
 
     when {
         isLoading -> {
@@ -108,7 +90,7 @@ internal fun ListContent(
         isError -> {
             LoadErrorScreen(
                 onRetryButtonClick = {
-                    onAction(ListUiAction.OnRetryButtonClick)
+                    state.eventSink(ListScreen.Event.OnRetryButtonClick)
                 },
             )
         }
@@ -122,14 +104,16 @@ internal fun ListContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(
-                count = pokemonList.itemCount,
-                key = { index -> "${index}_${pokemonList[index].hashCode()}" },
+                count = state.pokemonList.itemCount,
+                key = { index -> "${index}_${state.pokemonList[index].hashCode()}" },
             ) { index ->
-                val pokemon = pokemonList[index]
+                val pokemon = state.pokemonList[index]
                 if (pokemon != null) {
                     PokemonItem(
                         pokemon = pokemon,
-                        onItemClick = { onAction(ListUiAction.OnItemClick(pokemon.name)) },
+                        onPokemonItemClick = {
+                            state.eventSink(ListScreen.Event.OnPokemonItemClick(pokemon.name))
+                        },
                     )
                 }
             }
@@ -138,8 +122,10 @@ internal fun ListContent(
                 span = { GridItemSpan(maxLineSpan) },
             ) {
                 LoadStateFooter(
-                    loadState = pokemonList.loadState.append,
-                    onRetryClick = { pokemonList.retry() },
+                    loadState = state.pokemonList.loadState.append,
+                    onRetryClick = {
+                        state.eventSink(ListScreen.Event.OnRetryButtonClick)
+                    },
                 )
             }
         }
@@ -148,7 +134,7 @@ internal fun ListContent(
 
 @DevicePreview
 @Composable
-private fun ListScreenPreview() {
+private fun ListPreview() {
     val mockPokemonList = mutableListOf<PokemonModel>()
 
     for (i in 1..5) {
@@ -160,13 +146,15 @@ private fun ListScreenPreview() {
         )
     }
 
-    val mockPokemonListPagingItems = MutableStateFlow(PagingData.from(mockPokemonList)).collectAsLazyPagingItems()
+    val mockPokemonListPagingItems =
+        MutableStateFlow(PagingData.from(mockPokemonList)).collectAsLazyPagingItems()
 
     PokedexTheme {
-        ListScreen(
-            padding = PaddingValues(),
-            pokemonList = mockPokemonListPagingItems,
-            onAction = {},
+        List(
+            state = ListScreen.State(
+                pokemonList = mockPokemonListPagingItems,
+                eventSink = {},
+            ),
         )
     }
 }
