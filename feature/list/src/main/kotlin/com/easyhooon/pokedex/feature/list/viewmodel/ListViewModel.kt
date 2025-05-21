@@ -18,9 +18,6 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     repository: PokemonRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(ListUiState())
-    val uiState: StateFlow<ListUiState> = _uiState.asStateFlow()
-
     private val _uiEvent = Channel<ListUiEvent>()
     val uiEvent: Flow<ListUiEvent> = _uiEvent.receiveAsFlow()
 
