@@ -7,19 +7,10 @@ plugins {
 
 android {
     namespace = "com.easyhooon.pokedex.feature.list_detail"
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
-    implementation(libs.androidx.lifecycle.viewmodel.savedstate.android)
     implementations(
-        libs.kotlinx.collections.immutable,
-
         libs.timber,
-
-        libs.bundles.androidx.paging,
     )
 }

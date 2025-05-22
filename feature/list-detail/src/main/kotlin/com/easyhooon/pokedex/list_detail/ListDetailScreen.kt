@@ -103,7 +103,6 @@ internal fun ListDetailScreen(
             ListDetailContent(
                 uiState = uiState,
                 onAction = onAction,
-                modifier = Modifier.padding(bottom = 116.dp),
             )
         }
 

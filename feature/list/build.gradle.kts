@@ -7,10 +7,6 @@ plugins {
 
 android {
     namespace = "com.easyhooon.pokedex.feature.list"
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {

@@ -7,18 +7,10 @@ plugins {
 
 android {
     namespace = "com.easyhooon.pokedex.feature.favorites_detail"
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 dependencies {
     implementations(
-        libs.kotlinx.collections.immutable,
-
         libs.timber,
-
-        libs.bundles.androidx.paging,
     )
 }
