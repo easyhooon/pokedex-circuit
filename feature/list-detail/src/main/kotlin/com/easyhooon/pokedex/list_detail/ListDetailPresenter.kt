@@ -8,7 +8,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import com.easyhooon.pokedex.core.common.ErrorHandlerActions
 import com.easyhooon.pokedex.core.common.InsertFavoriteResult
+import com.easyhooon.pokedex.core.common.handleException
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.list_detail.R
@@ -29,7 +31,10 @@ class ListDetailPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val repository: PokemonRepository,
     @ApplicationContext private val context: Context,
-) : Presenter<ListDetailScreen.State> {
+) : Presenter<ListDetailScreen.State>, ErrorHandlerActions {
+
+    private var setServerErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
+    private var setNetworkErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
 
     @Composable
     override fun present(): ListDetailScreen.State {
@@ -40,6 +45,13 @@ class ListDetailPresenter @AssistedInject constructor(
         var isNetworkErrorDialogVisible by rememberRetained { mutableStateOf(false) }
         var isServerErrorDialogVisible by rememberRetained { mutableStateOf(false) }
 
+        setServerErrorDialogVisibleCallback = { flag ->
+            isServerErrorDialogVisible = flag
+        }
+        setNetworkErrorDialogVisibleCallback = { flag ->
+            isNetworkErrorDialogVisible = flag
+        }
+
         fun getPokemonDetail(name: String) {
             scope.launch {
                 isLoading = true
@@ -49,7 +61,7 @@ class ListDetailPresenter @AssistedInject constructor(
                     }
                     .onFailure { throwable ->
                         Timber.e(throwable)
-                        // handleException(throwable, this)
+                        handleException(throwable, this@ListDetailPresenter)
                     }
                 isLoading = false
             }
@@ -87,20 +99,12 @@ class ListDetailPresenter @AssistedInject constructor(
             }
         }
 
-        fun setServerErrorDialogVisible(flag: Boolean) {
-            isServerErrorDialogVisible = flag
-        }
-
-        fun setNetworkErrorDialogVisible(flag: Boolean) {
-            isNetworkErrorDialogVisible = flag
-        }
-
         fun refresh(error: ErrorType) {
             getPokemonDetail(name)
 
             when (error) {
-                ErrorType.NETWORK -> setNetworkErrorDialogVisible(false)
-                ErrorType.SERVER -> setServerErrorDialogVisible(false)
+                ErrorType.NETWORK -> isNetworkErrorDialogVisible = false
+                ErrorType.SERVER -> isServerErrorDialogVisible = false
             }
         }
 
@@ -118,9 +122,17 @@ class ListDetailPresenter @AssistedInject constructor(
             when (event) {
                 is ListDetailScreen.Event.OnBackClick -> navigator.pop()
                 is ListDetailScreen.Event.OnFavoritesButtonClick -> addFavoritePokemon(pokemon)
-                is ListDetailScreen.Event.OnRetryButtonClick -> {}
+                is ListDetailScreen.Event.OnRetryButtonClick -> refresh(error = event.errorType)
             }
         }
+    }
+
+    override fun setServerErrorDialogVisible(flag: Boolean) {
+        setServerErrorDialogVisibleCallback?.invoke(flag)
+    }
+
+    override fun setNetworkErrorDialogVisible(flag: Boolean) {
+        setNetworkErrorDialogVisibleCallback?.invoke(flag)
     }
 
     @CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
@@ -131,12 +143,4 @@ class ListDetailPresenter @AssistedInject constructor(
             navigator: Navigator,
         ): ListDetailPresenter
     }
-
-//    override fun setServerErrorDialogVisible(flag: Boolean) {
-//        isServerErrorDialogVisible = flag
-//    }
-//
-//    override fun setNetworkErrorDialogVisible(flag: Boolean) {
-//        isNetworkErrorDialogVisible = flag
-//    }
 }
