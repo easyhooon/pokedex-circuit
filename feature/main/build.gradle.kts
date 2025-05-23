@@ -23,5 +23,6 @@ dependencies {
         libs.androidx.navigation.compose,
 
         libs.timber,
+        libs.compose.system.ui.controller,
     )
 }
