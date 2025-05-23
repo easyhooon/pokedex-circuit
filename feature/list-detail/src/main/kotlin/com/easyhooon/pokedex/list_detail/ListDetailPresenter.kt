@@ -82,7 +82,7 @@ class ListDetailPresenter @AssistedInject constructor(
                     is InsertFavoriteResult.Duplicate -> {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.favorites_add_success),
+                            context.getString(R.string.favorites_duplicate),
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
@@ -90,7 +90,7 @@ class ListDetailPresenter @AssistedInject constructor(
                     is InsertFavoriteResult.LimitExceeded -> {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.favorites_add_success),
+                            context.getString(R.string.favorites_max_limit),
                             Toast.LENGTH_SHORT,
                         ).show()
                     }
