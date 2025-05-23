@@ -4,9 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.easyhooon.pokedex.core.designsystem.component.PokedexScaffold
 import com.easyhooon.pokedex.feature.list.ListScreen
@@ -18,6 +21,7 @@ import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
 import dagger.hilt.android.AndroidEntryPoint
+import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +36,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             val backStack = rememberSaveableBackStack(root = ListScreen)
             val navigator = rememberCircuitNavigator(backStack)
+            val systemUiController = rememberExSystemUiController()
+
+            DisposableEffect(systemUiController) {
+                systemUiController.setSystemBarsColor(
+                    color = Color.White,
+                    darkIcons = true,
+                    isNavigationBarContrastEnforced = false,
+                )
+
+                onDispose {}
+            }
 
             CircuitCompositionLocals(circuit) {
                 PokedexScaffold(

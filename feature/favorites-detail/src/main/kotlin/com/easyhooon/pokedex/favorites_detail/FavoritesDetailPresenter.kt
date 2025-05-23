@@ -39,25 +39,13 @@ class FavoritesDetailPresenter @AssistedInject constructor(
                 try {
                     val affectedRows = repository.deleteFavoritePokemon(pokemon)
                     if (affectedRows > 0) {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.remove_success),
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(context, context.getString(R.string.remove_success), Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.remove_failed),
-                            Toast.LENGTH_SHORT,
-                        ).show()
+                        Toast.makeText(context, context.getString(R.string.remove_failed), Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
                     Timber.e(e)
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.remove_failed),
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    Toast.makeText(context, context.getString(R.string.remove_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }

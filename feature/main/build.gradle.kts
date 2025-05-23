@@ -26,5 +26,6 @@ dependencies {
         libs.androidx.splash,
 
         libs.timber,
+        libs.compose.system.ui.controller,
     )
 }
