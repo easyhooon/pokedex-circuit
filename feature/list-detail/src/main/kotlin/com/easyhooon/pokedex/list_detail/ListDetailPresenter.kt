@@ -14,6 +14,7 @@ import com.easyhooon.pokedex.core.common.handleException
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.list_detail.R
+import com.skydoves.compose.effects.RememberedEffect
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
@@ -108,7 +109,7 @@ class ListDetailPresenter @AssistedInject constructor(
             }
         }
 
-        LaunchedEffect(screen.name) {
+        RememberedEffect(screen.name) {
             getPokemonDetail(screen.name)
         }
 
