@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
-import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.favorites_detail.R
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
@@ -31,13 +30,12 @@ class FavoritesDetailPresenter @AssistedInject constructor(
     override fun present(): FavoritesDetailScreen.State {
         val scope = rememberCoroutineScope()
         val isLoading by rememberRetained { mutableStateOf(false) }
-        val pokemon by rememberRetained { mutableStateOf(PokemonDetailModel()) }
 
         @Suppress("TooGenericExceptionCaught")
         fun removeFavoritePokemon() {
             scope.launch {
                 try {
-                    val affectedRows = repository.deleteFavoritePokemon(pokemon)
+                    val affectedRows = repository.deleteFavoritePokemon(screen.pokemon)
                     if (affectedRows > 0) {
                         Toast.makeText(context, context.getString(R.string.remove_success), Toast.LENGTH_SHORT).show()
                     } else {
