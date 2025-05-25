@@ -7,6 +7,13 @@
 <br/>
 
 ## Features
+|목록 화면|즐겨찾기 화면|
+|:-----:|:-----:|
+|<img width="240" src="https://github.com/user-attachments/assets/a4063504-25b1-4347-9862-288aaa17cd20">|<img width="240" src="https://github.com/user-attachments/assets/12e89854-b62c-4743-a2cf-f224bba6f52a">|
+
+|즐겨찾기 저장|즐겨찾기 삭제|
+|:-----:|:-----:|
+|<img width="240" src="https://github.com/user-attachments/assets/5c3bf491-a2e6-4cfc-acd5-d44f58de569f">|<img width="240" src="https://github.com/user-attachments/assets/996828c2-b973-4b23-a816-6e22706848f9">|
 
 ## Development
 
