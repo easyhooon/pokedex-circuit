@@ -13,7 +13,7 @@ data class PokemonDetailModel(
     val weight: Int = 0,
     val types: List<PokemonTypeSlotModel> = emptyList(),
     val isFavorite: Boolean = false,
-): Parcelable {
+) : Parcelable {
     val imageUrl: String
         get() = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"
 }
@@ -23,11 +23,11 @@ data class PokemonDetailModel(
 data class PokemonTypeSlotModel(
     val slot: Int = 0,
     val type: PokemonTypeModel = PokemonTypeModel(),
-): Parcelable
+) : Parcelable
 
 @Parcelize
 @Stable
 data class PokemonTypeModel(
     val name: String = "",
     val url: String = "",
-): Parcelable
+) : Parcelable
