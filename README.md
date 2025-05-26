@@ -6,6 +6,10 @@
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-35-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
+![list-detail-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/723d85ec-3abe-40e6-927e-2c44c87b6916)
+![favorites-detail-ezgif com-optimize](https://github.com/user-attachments/assets/058ed80b-70cb-412e-8cf6-0fa8b0423daa)
+
+
 ## Features
 |목록 화면|즐겨찾기 화면|
 |:-----:|:-----:|
@@ -13,7 +17,7 @@
 
 |즐겨찾기 저장|즐겨찾기 삭제|
 |:-----:|:-----:|
-|<img width="240" src="https://github.com/user-attachments/assets/5c3bf491-a2e6-4cfc-acd5-d44f58de569f">|<img width="240" src="https://github.com/user-attachments/assets/996828c2-b973-4b23-a816-6e22706848f9">|
+|<img width="240" src="https://github.com/user-attachments/assets/723d85ec-3abe-40e6-927e-2c44c87b6916">|<img width="240" src="https://github.com/user-attachments/assets/058ed80b-70cb-412e-8cf6-0fa8b0423daa">|
 
 ## Development
 
