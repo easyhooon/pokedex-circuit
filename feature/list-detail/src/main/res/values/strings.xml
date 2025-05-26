@@ -8,5 +8,5 @@
     <string name="type">타입</string>
     <string name="favorites_add_success">즐겨찾기에 저장되었습니다</string>
     <string name="favorites_duplicate">이미 즐겨찾기에 저장된 포켓몬입니다.</string>
-    <string name="favorites_max_limit">저장 가능 수 초과</string>
+    <string name="favorites_max_limit">더 이상 즐겨찾기에 저장할 수 없습니다.</string>
 </resources>
