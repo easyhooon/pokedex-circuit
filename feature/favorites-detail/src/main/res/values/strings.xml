@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="favorites_detail_title">Detail</string>
-    <string name="remove_favorite">즐겨찾기에서 삭제되었습니다</string>
-    <string name="remove_success">삭제 성공</string>
-    <string name="remove_failed">데이터를 찾을 수 없습니다.</string>
+    <string name="remove_favorite">즐겨찾기에서 삭제</string>
+    <string name="remove_success">즐겨찾기에서 삭제되었습니다</string>
+    <string name="remove_failed">데이터를 찾을 수 없습니다</string>
     <string name="weight">몸무게</string>
     <string name="height">키</string>
     <string name="default_info">기본 정보</string>
