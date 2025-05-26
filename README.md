@@ -6,10 +6,6 @@
 [![targetSdkVersion](https://img.shields.io/badge/targetSdkVersion-35-orange)](https://developer.android.com/distribute/best-practices/develop/target-sdk)
 <br/>
 
-![list-detail-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/723d85ec-3abe-40e6-927e-2c44c87b6916)
-![favorites-detail-ezgif com-optimize](https://github.com/user-attachments/assets/058ed80b-70cb-412e-8cf6-0fa8b0423daa)
-
-
 ## Features
 |목록 화면|즐겨찾기 화면|
 |:-----:|:-----:|
