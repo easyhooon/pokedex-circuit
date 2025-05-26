@@ -99,6 +99,7 @@ internal fun ListDetail(
             LoadingWheel(modifier = Modifier.fillMaxSize())
         }
 
+        // TODO Circuit Overlay 적용
         if (state.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
                 onRetryClick = {
