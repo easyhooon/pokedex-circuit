@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.feature.list.R
+import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Composable
 internal fun LoadErrorFooter(
@@ -40,7 +40,7 @@ internal fun LoadErrorFooter(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(id = R.string.error_message),
+                text = stringResource(id = com.easyhooon.pokedex.feature.list.R.string.error_message),
                 color = Color.DarkGray,
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
@@ -57,7 +57,7 @@ internal fun LoadErrorFooter(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = stringResource(id = R.string.retry))
+                    Text(text = stringResource(id = designR.string.retry))
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Default.Refresh,

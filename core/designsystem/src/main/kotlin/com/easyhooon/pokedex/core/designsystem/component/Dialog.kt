@@ -28,9 +28,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.R
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
-import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.designsystem.theme.Small14_Mid
+import com.easyhooon.pokedex.core.designsystem.theme.XSmall12_Mid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,7 +78,7 @@ fun PokedexDialog(
                 text = stringResource(id = descriptionResId),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
-                style = Medium16_Mid,
+                style = Small14_Mid,
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -104,7 +104,7 @@ fun PokedexDialog(
                     Text(
                         text = stringResource(id = confirmTextResId),
                         color = Color.White,
-                        style = Small14_Mid,
+                        style = XSmall12_Mid,
                     )
                 }
                 if (cancelTextResId != null) {
