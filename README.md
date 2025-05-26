@@ -15,6 +15,9 @@
 |:-----:|:-----:|
 |<img width="240" src="https://github.com/user-attachments/assets/723d85ec-3abe-40e6-927e-2c44c87b6916">|<img width="240" src="https://github.com/user-attachments/assets/058ed80b-70cb-412e-8cf6-0fa8b0423daa">|
 
+### Articles
+- [Circuit 시리즈](https://velog.io/@mraz3068/series/Circuit)
+
 ## Development
 
 ### Required
