@@ -17,7 +17,6 @@ kotlin-ktlint-source = "0.50.0"
 
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.8.1"
-kotlinx-serialization-converter = "1.0.0"
 kotlinx-collections-immutable = "0.3.8"
 
 androidx-core = "1.16.0"
@@ -97,7 +96,7 @@ compose-system-ui-controller = { group = "tech.thdev", name = "extensions-compos
 compose-keyboard-state = { group = "tech.thdev", name = "extensions-compose-keyboard-state", version.ref = "compose-extensions" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-kotlinx-serialization-converter = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "kotlinx-serialization-converter" }
+retrofit-kotlinx-serialization-converter = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }

@@ -1,6 +1,5 @@
 package com.easyhooon.pokedex.core.network.di
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.easyhooon.pokedex.core.network.BuildConfig
 import dagger.Module
 import dagger.Provides
@@ -11,6 +10,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -38,7 +38,7 @@ internal object NetworkModule {
         return HttpLoggingInterceptor { message ->
             Timber.tag("ApiService").d(message)
         }.apply {
-            level = if (com.easyhooon.pokedex.core.network.BuildConfig.DEBUG) {
+            level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY
             } else {
                 HttpLoggingInterceptor.Level.NONE
