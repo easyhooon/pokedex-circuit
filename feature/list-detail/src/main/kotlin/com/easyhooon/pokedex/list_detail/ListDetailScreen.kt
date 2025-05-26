@@ -52,7 +52,6 @@ data class ListDetailScreen(
 ) : Screen {
     data class State(
         val isLoading: Boolean = false,
-        val name: String = "",
         val pokemon: PokemonDetailModel = PokemonDetailModel(),
         val isNetworkErrorDialogVisible: Boolean = false,
         val isServerErrorDialogVisible: Boolean = false,

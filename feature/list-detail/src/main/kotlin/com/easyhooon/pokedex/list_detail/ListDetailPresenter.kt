@@ -40,7 +40,6 @@ class ListDetailPresenter @AssistedInject constructor(
     override fun present(): ListDetailScreen.State {
         val scope = rememberCoroutineScope()
         var isLoading by rememberRetained { mutableStateOf(false) }
-        var name by rememberRetained { mutableStateOf("") }
         var pokemon by rememberRetained { mutableStateOf(PokemonDetailModel()) }
         var isNetworkErrorDialogVisible by rememberRetained { mutableStateOf(false) }
         var isServerErrorDialogVisible by rememberRetained { mutableStateOf(false) }
@@ -100,7 +99,7 @@ class ListDetailPresenter @AssistedInject constructor(
         }
 
         fun refresh(error: ErrorType) {
-            getPokemonDetail(name)
+            getPokemonDetail(screen.name)
 
             when (error) {
                 ErrorType.NETWORK -> isNetworkErrorDialogVisible = false
@@ -114,7 +113,6 @@ class ListDetailPresenter @AssistedInject constructor(
 
         return ListDetailScreen.State(
             isLoading = isLoading,
-            name = screen.name,
             pokemon = pokemon,
             isNetworkErrorDialogVisible = isNetworkErrorDialogVisible,
             isServerErrorDialogVisible = isServerErrorDialogVisible,

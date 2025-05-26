@@ -25,6 +25,7 @@ import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.feature.list.R
+import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Composable
 internal fun LoadErrorScreen(
@@ -56,7 +57,7 @@ internal fun LoadErrorScreen(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = stringResource(id = R.string.retry))
+                    Text(text = stringResource(id = designR.string.retry))
                     Spacer(modifier = Modifier.width(8.dp))
                     Icon(
                         imageVector = Icons.Default.Refresh,
