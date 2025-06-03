@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.favorites_detail
+package com.easyhooon.pokedex.feature.favorites_detail
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -43,11 +43,11 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.favorites_detail.preview.FavoritesDetailPreviewParameterProvider
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiAction
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiEvent
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailUiState
-import com.easyhooon.pokedex.favorites_detail.viewmodel.FavoritesDetailViewModel
+import com.easyhooon.pokedex.feature.favorites_detail.preview.FavoritesDetailPreviewParameterProvider
+import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailUiAction
+import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailUiEvent
+import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailUiState
+import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailViewModel
 import com.easyhooon.pokedex.feature.favorites_detail.R
 import com.easyhooon.pokedex.core.designsystem.R as designR
 

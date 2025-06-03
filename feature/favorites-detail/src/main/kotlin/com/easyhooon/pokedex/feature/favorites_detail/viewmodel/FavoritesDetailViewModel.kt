@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.favorites_detail.viewmodel
+package com.easyhooon.pokedex.feature.favorites_detail.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

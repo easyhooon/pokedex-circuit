@@ -32,7 +32,9 @@ dependencies {
         projects.core.network,
 
         projects.feature.favorites,
+        projects.feature.favoritesDetail,
         projects.feature.list,
+        projects.feature.listDetail,
         projects.feature.main,
 
         libs.androidx.activity.compose,

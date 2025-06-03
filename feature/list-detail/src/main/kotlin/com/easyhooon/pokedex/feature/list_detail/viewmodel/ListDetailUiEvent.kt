@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.list_detail.viewmodel
+package com.easyhooon.pokedex.feature.list_detail.viewmodel
 
 import com.easyhooon.pokedex.core.common.UiText
 

@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.favorites_detail.navigation
+package com.easyhooon.pokedex.feature.favorites_detail.navigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavController
@@ -6,7 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.core.navigation.Route
-import com.easyhooon.pokedex.favorites_detail.FavoritesDetailRoute
+import com.easyhooon.pokedex.feature.favorites_detail.FavoritesDetailRoute
 
 fun NavController.navigateToFavoritesDetail(pokemon: PokemonDetailModel) {
     navigate(Route.FavoritesDetail(pokemon))

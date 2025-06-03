@@ -13,10 +13,10 @@ import androidx.navigation.navOptions
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.core.navigation.MainTabRoute
 import com.easyhooon.pokedex.core.navigation.Route
-import com.easyhooon.pokedex.favorites_detail.navigation.navigateToFavoritesDetail
+import com.easyhooon.pokedex.feature.favorites_detail.navigation.navigateToFavoritesDetail
 import com.easyhooon.pokedex.feature.favorites.navigation.navigateToFavorites
 import com.easyhooon.pokedex.feature.list.navigation.navigateToList
-import com.easyhooon.pokedex.list_detail.navigation.navigateToListDetail
+import com.easyhooon.pokedex.feature.list_detail.navigation.navigateToListDetail
 
 internal class MainNavController(
     val navController: NavHostController,

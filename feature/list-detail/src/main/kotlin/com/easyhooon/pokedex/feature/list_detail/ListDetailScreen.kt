@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.list_detail
+package com.easyhooon.pokedex.feature.list_detail
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -44,14 +44,14 @@ import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.feature.list_detail.R
-import com.easyhooon.pokedex.list_detail.preview.ListDetailPreviewParameterProvider
-import com.easyhooon.pokedex.list_detail.viewmodel.ErrorType
+import com.easyhooon.pokedex.feature.list_detail.preview.ListDetailPreviewParameterProvider
+import com.easyhooon.pokedex.feature.list_detail.viewmodel.ErrorType
 import com.easyhooon.pokedex.core.common.ObserveAsEvents
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiAction
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiEvent
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailUiState
-import com.easyhooon.pokedex.list_detail.viewmodel.ListDetailViewModel
+import com.easyhooon.pokedex.feature.list_detail.viewmodel.ListDetailUiAction
+import com.easyhooon.pokedex.feature.list_detail.viewmodel.ListDetailUiEvent
+import com.easyhooon.pokedex.feature.list_detail.viewmodel.ListDetailUiState
+import com.easyhooon.pokedex.feature.list_detail.viewmodel.ListDetailViewModel
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Composable
