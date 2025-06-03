@@ -44,7 +44,6 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.feature.list_detail.R
 import com.easyhooon.pokedex.feature.list_detail.preview.ListDetailPreviewParameterProvider
 import com.easyhooon.pokedex.feature.list_detail.viewmodel.ErrorType
 import com.easyhooon.pokedex.feature.list_detail.viewmodel.ListDetailUiAction

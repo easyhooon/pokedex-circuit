@@ -24,7 +24,6 @@ private val jsonConverterFactory = jsonRule.asConverterFactory("application/json
 private const val SERVER_BASE_URL = "https://pokeapi.co/api/v2/"
 
 val networkModule = module {
-    
     single<HttpLoggingInterceptor> {
         HttpLoggingInterceptor { message ->
             Timber.tag("ApiService").d(message)

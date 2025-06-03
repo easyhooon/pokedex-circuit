@@ -47,7 +47,6 @@ import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailU
 import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailUiEvent
 import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailUiState
 import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailViewModel
-import com.easyhooon.pokedex.feature.favorites_detail.R
 import org.koin.compose.viewmodel.koinViewModel
 import com.easyhooon.pokedex.core.designsystem.R as designR
 

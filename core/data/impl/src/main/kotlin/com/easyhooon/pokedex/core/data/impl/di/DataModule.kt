@@ -7,7 +7,6 @@ import com.easyhooon.pokedex.core.database.di.daoModule
 import com.easyhooon.pokedex.core.network.di.apiModule
 import com.easyhooon.pokedex.core.network.di.networkModule
 
-
 val dataModule =
     module {
         includes(
@@ -15,10 +14,10 @@ val dataModule =
             apiModule,
             networkModule,
         )
-        single<PokemonRepository> { 
+        single<PokemonRepository> {
             DefaultPokemonRepository(
                 service = get(),
-                dao = get()
+                dao = get(),
             )
         }
     }

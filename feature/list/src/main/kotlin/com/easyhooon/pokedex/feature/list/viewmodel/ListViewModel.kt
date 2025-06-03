@@ -15,8 +15,7 @@ class ListViewModel(
     private val _uiEvent = Channel<ListUiEvent>()
     val uiEvent: Flow<ListUiEvent> = _uiEvent.receiveAsFlow()
 
-    val pokemonList = repository.getPokemonList()
-        .cachedIn(viewModelScope)
+    val pokemonList = repository.getPokemonList().cachedIn(viewModelScope)
 
     fun onAction(action: ListUiAction) {
         when (action) {
