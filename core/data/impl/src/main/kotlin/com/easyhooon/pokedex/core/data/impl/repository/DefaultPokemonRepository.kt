@@ -8,6 +8,7 @@ import com.easyhooon.pokedex.core.common.InsertFavoriteResult
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.data.impl.mapper.toEntity
 import com.easyhooon.pokedex.core.data.impl.mapper.toModel
+import com.easyhooon.pokedex.core.data.impl.paging.PokemonPagingSource
 import com.easyhooon.pokedex.core.data.impl.util.Constants
 import com.easyhooon.pokedex.core.data.impl.util.runSuspendCatching
 import com.easyhooon.pokedex.core.database.FavoritesPokemonDao
@@ -26,7 +27,7 @@ class DefaultPokemonRepository(
     @OptIn(InternalSerializationApi::class)
     override fun getPokemonList(): Flow<PagingData<PokemonModel>> {
         val pagingSourceFactory = {
-            com.easyhooon.pokedex.core.data.impl.paging.PokemonPagingSource(service)
+            PokemonPagingSource(service)
         }
         val pagingDataFlow = Pager(
             config = PagingConfig(

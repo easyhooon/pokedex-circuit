@@ -1,6 +1,5 @@
 package com.easyhooon.pokedex.core.data.impl.di
 
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.data.impl.repository.DefaultPokemonRepository
