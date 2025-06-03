@@ -3,12 +3,12 @@
 minSdk = "26"
 targetSdk = "35"
 compileSdk = "35"
-versionCode = "37"
-versionName = "1.3.9"
+versionCode = "1"
+versionName = "1.0"
 packageName = "com.easyhooon.pokedex"
 
 android-gradle-plugin = "8.8.2"
-kotlin-core = "2.1.20"
+kotlin-core = "2.1.21"
 gradle-dependency-handler-extensions = "1.1.0"
 
 kotlin-detekt = "1.23.8"
@@ -38,7 +38,7 @@ retrofit = "2.11.0"
 okhttp = "5.0.0-alpha.14"
 coil-compose = "2.7.0"
 timber = "5.0.1"
-ksp = "2.1.20-2.0.0"
+ksp = "2.1.21-2.0.1"
 compose-extensions = "25.1.0"
 compose-stable-marker = "1.0.6"
 landscapist = "2.4.7"
@@ -54,6 +54,7 @@ androidx-junit = "1.2.1"
 gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin-core" }
 gradle-androidx-room = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidx-room" }
+gradle-ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 compose-compiler-extension = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin-core" }
 
 kotlin-ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "kotlin-ktlint-source" }
@@ -95,12 +96,10 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-coroutines = { module = "io.insert-koin:koin-core-coroutines", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin-annoations" }
-koin-ksp = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annoations" }
+koin-ksp-compiler = { module = "io.insert-koin:koin-ksp-compiler", version.ref = "koin-annoations" }
 
 compose-system-ui-controller = { group = "tech.thdev", name = "extensions-compose-system-ui-controller", version.ref = "compose-extensions" }
 compose-keyboard-state = { group = "tech.thdev", name = "extensions-compose-keyboard-state", version.ref = "compose-extensions" }
@@ -153,6 +152,7 @@ pokedex-android-library = { id = "pokedex.android.library", version = "unspecifi
 pokedex-android-library-compose = { id = "pokedex.android.library.compose", version = "unspecified" }
 pokedex-android-feature = { id = "pokedex.android.feature", version = "unspecified" }
 pokedex-android-hilt = { id = "pokedex.android.hilt", version = "unspecified" }
+pokedex-android-koin = { id = "pokedex.android.koin", version = "unspecified" }
 pokedex-android-retrofit = { id = "pokedex.android.retrofit", version = "unspecified" }
 pokedex-android-room = { id = "pokedex.android.room", version = "unspecified" }
 pokedex-jvm-kotlin = { id = "pokedex.jvm.kotlin", version = "unspecified" }
