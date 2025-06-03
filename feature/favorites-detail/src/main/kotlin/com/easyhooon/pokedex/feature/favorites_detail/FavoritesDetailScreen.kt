@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.list_detail
+package com.easyhooon.pokedex.feature.favorites_detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,18 +26,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.LoadingWheel
-import com.easyhooon.pokedex.core.designsystem.component.NetworkErrorDialog
 import com.easyhooon.pokedex.core.designsystem.component.NetworkImage
 import com.easyhooon.pokedex.core.designsystem.component.PokedexOutlinedButton
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
 import com.easyhooon.pokedex.core.designsystem.component.PokemonTypeChip
-import com.easyhooon.pokedex.core.designsystem.component.ServerErrorDialog
 import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.easyhooon.pokedex.feature.list_detail.R
+import com.easyhooon.pokedex.feature.favorites_detail.R
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
@@ -47,33 +45,25 @@ import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Parcelize
-data class ListDetailScreen(
-    val name: String,
+data class FavoritesDetailScreen(
+    val pokemon: PokemonDetailModel,
 ) : Screen {
     data class State(
         val isLoading: Boolean = false,
         val pokemon: PokemonDetailModel = PokemonDetailModel(),
-        val isNetworkErrorDialogVisible: Boolean = false,
-        val isServerErrorDialogVisible: Boolean = false,
         val eventSink: (Event) -> Unit,
     ) : CircuitUiState
 
     sealed interface Event : CircuitUiEvent {
         data object OnBackClick : Event
         data object OnFavoritesButtonClick : Event
-        data class OnRetryButtonClick(val errorType: ErrorType) : Event
     }
 }
 
-enum class ErrorType {
-    NETWORK,
-    SERVER,
-}
-
-@CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
+@CircuitInject(FavoritesDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun ListDetail(
-    state: ListDetailScreen.State,
+internal fun FavoritesDetail(
+    state: FavoritesDetailScreen.State,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -84,44 +74,27 @@ internal fun ListDetail(
         ) {
             PokedexTopAppBar(
                 navigationType = TopAppBarNavigationType.Back,
-                title = stringResource(R.string.list_detail_title),
+                title = stringResource(R.string.favorites_detail_title),
                 navigationIconRes = designR.drawable.ic_arrow_back_gray,
                 containerColor = Color.Transparent,
                 onNavigationClick = {
-                    state.eventSink(ListDetailScreen.Event.OnBackClick)
+                    state.eventSink(FavoritesDetailScreen.Event.OnBackClick)
                 },
             )
 
-            ListDetailContent(state = state)
+            FavoritesDetailContent(state = state)
         }
 
         if (state.isLoading) {
             LoadingWheel(modifier = Modifier.fillMaxSize())
-        }
-
-        // TODO Circuit Overlay 적용
-        if (state.isNetworkErrorDialogVisible) {
-            NetworkErrorDialog(
-                onRetryClick = {
-                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.NETWORK))
-                },
-            )
-        }
-
-        if (state.isServerErrorDialogVisible) {
-            ServerErrorDialog(
-                onRetryClick = {
-                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.SERVER))
-                },
-            )
         }
     }
 }
 
 @Suppress("ImplicitDefaultLocale")
 @Composable
-internal fun ListDetailContent(
-    state: ListDetailScreen.State,
+internal fun FavoritesDetailContent(
+    state: FavoritesDetailScreen.State,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -196,7 +169,7 @@ internal fun ListDetailContent(
         Spacer(modifier = Modifier.height(32.dp))
         PokedexOutlinedButton(
             onClick = {
-                state.eventSink(ListDetailScreen.Event.OnFavoritesButtonClick)
+                state.eventSink(FavoritesDetailScreen.Event.OnFavoritesButtonClick)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -207,12 +180,12 @@ internal fun ListDetailContent(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_add_favorites),
-                    contentDescription = "Add Favorite Icon",
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_remove_favorites),
+                    contentDescription = "Remove Favorites Icon",
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.add_favorites),
+                    text = stringResource(R.string.remove_favorite),
                     style = Medium16_Mid,
                 )
             }
@@ -222,10 +195,10 @@ internal fun ListDetailContent(
 
 @DevicePreview
 @Composable
-private fun ListDetailScreenPreview() {
+private fun FavoritesDetailScreenPreview() {
     PokedexTheme {
-        ListDetail(
-            state = ListDetailScreen.State(eventSink = {}),
+        FavoritesDetail(
+            state = FavoritesDetailScreen.State(eventSink = {}),
         )
     }
 }

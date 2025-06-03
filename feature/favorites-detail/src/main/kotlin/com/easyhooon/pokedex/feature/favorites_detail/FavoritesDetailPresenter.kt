@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.favorites_detail
+package com.easyhooon.pokedex.feature.favorites_detail
 
 import android.content.Context
 import android.widget.Toast
