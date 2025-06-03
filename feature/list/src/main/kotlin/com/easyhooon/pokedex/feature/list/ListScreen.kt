@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -37,13 +36,14 @@ import com.easyhooon.pokedex.feature.list.viewmodel.ListUiAction
 import com.easyhooon.pokedex.feature.list.viewmodel.ListUiEvent
 import com.easyhooon.pokedex.feature.list.viewmodel.ListViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.koin.compose.viewmodel.koinViewModel
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Composable
 internal fun ListRoute(
     padding: PaddingValues,
     navigateToListDetail: (String) -> Unit,
-    viewModel: ListViewModel = hiltViewModel(),
+    viewModel: ListViewModel = koinViewModel(),
 ) {
     val pokemonList = viewModel.pokemonList.collectAsLazyPagingItems()
     val context = LocalContext.current

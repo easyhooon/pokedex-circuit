@@ -9,7 +9,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         applyPlugins(
             "pokedex.android.library",
             "pokedex.android.library.compose",
-            "pokedex.android.hilt",
+            "pokedex.android.koin",
         )
 
         dependencies {
@@ -20,7 +20,9 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(project(path = ":core:navigation"))
 
             implementation(libs.androidx.navigation.compose)
-            implementation(libs.androidx.hilt.navigation.compose)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.koin.compose.viewmodel.navigation)
             implementation(libs.compose.effects)
             implementation(libs.bundles.androidx.lifecycle)
         }

@@ -8,11 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.easyhooon.pokedex.core.designsystem.component.PokedexScaffold
-import com.easyhooon.pokedex.favorites_detail.navigation.favoritesDetailNavGraph
+import com.easyhooon.pokedex.feature.favorites_detail.navigation.favoritesDetailNavGraph
 import com.easyhooon.pokedex.feature.favorites.navigation.favoritesNavGraph
 import com.easyhooon.pokedex.feature.list.navigation.listNavGraph
 import com.easyhooon.pokedex.feature.main.component.MainBottomBar
-import com.easyhooon.pokedex.list_detail.navigation.listDetailNavGraph
+import com.easyhooon.pokedex.feature.list_detail.navigation.listDetailNavGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

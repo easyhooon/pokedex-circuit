@@ -8,10 +8,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import dagger.hilt.android.AndroidEntryPoint
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

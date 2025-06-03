@@ -13,7 +13,7 @@ gradlePlugin {
         "android.library" to "AndroidLibraryConventionPlugin",
         "android.library.compose" to "AndroidLibraryComposeConventionPlugin",
         "android.feature" to "AndroidFeatureConventionPlugin",
-        "android.hilt" to "AndroidHiltConventionPlugin",
+        "android.koin" to "AndroidKoinConventionPlugin",
         "android.retrofit" to "AndroidRetrofitConventionPlugin",
         "jvm.kotlin" to "JvmKotlinConventionPlugin",
         "android.room" to "AndroidRoomConventionPlugin",

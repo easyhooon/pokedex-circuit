@@ -3,7 +3,7 @@
 plugins {
     alias(libs.plugins.pokedex.android.library)
     alias(libs.plugins.pokedex.android.library.compose)
-    alias(libs.plugins.pokedex.android.hilt)
+    alias(libs.plugins.pokedex.android.koin)
     alias(libs.plugins.pokedex.android.retrofit)
     alias(libs.plugins.kotlin.parcelize)
 }
@@ -17,8 +17,6 @@ dependencies {
         projects.core.model,
 
         libs.kotlinx.collections.immutable,
-
-        libs.androidx.hilt.navigation.compose,
 
         libs.timber,
         libs.bundles.androidx.lifecycle,

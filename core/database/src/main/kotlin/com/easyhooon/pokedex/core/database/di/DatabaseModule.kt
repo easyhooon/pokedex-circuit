@@ -3,23 +3,14 @@ package com.easyhooon.pokedex.core.database.di
 import android.content.Context
 import androidx.room.Room
 import com.easyhooon.pokedex.core.database.FavoritesPokemonDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
-    @Singleton
-    @Provides
-    fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesPokemonDatabase =
+val databaseModule = module {
+    single {
         Room.databaseBuilder(
-            context.applicationContext,
+            get<Context>().applicationContext,
             FavoritesPokemonDatabase::class.java,
             "favorites_pokemon_database",
         ).build()
+    }
 }

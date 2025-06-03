@@ -6,10 +6,10 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.easyhooon.pokedex.core.common.InsertFavoriteResult
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
-import com.easyhooon.pokedex.core.data.mapper.toEntity
-import com.easyhooon.pokedex.core.data.mapper.toModel
-import com.easyhooon.pokedex.core.data.util.Constants
-import com.easyhooon.pokedex.core.data.util.runSuspendCatching
+import com.easyhooon.pokedex.core.data.impl.mapper.toEntity
+import com.easyhooon.pokedex.core.data.impl.mapper.toModel
+import com.easyhooon.pokedex.core.data.impl.util.Constants
+import com.easyhooon.pokedex.core.data.impl.util.runSuspendCatching
 import com.easyhooon.pokedex.core.database.FavoritesPokemonDao
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.core.model.PokemonModel
@@ -18,9 +18,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.InternalSerializationApi
-import javax.inject.Inject
 
-internal class DefaultPokemonRepository @Inject constructor(
+class DefaultPokemonRepository(
     private val service: PokemonService,
     private val dao: FavoritesPokemonDao,
 ) : PokemonRepository {

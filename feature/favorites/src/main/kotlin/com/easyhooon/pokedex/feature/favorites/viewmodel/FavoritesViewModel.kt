@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class FavoritesViewModel @Inject constructor(
+class FavoritesViewModel(
     repository: PokemonRepository,
 ) : ViewModel() {
     val favoritesPokemonList = repository.getFavoritesPokemonList()

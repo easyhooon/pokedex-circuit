@@ -12,5 +12,5 @@ import com.easyhooon.pokedex.core.database.entity.PokemonDetailEntity
 )
 @TypeConverters(PokemonTypeSlotListConverter::class)
 abstract class FavoritesPokemonDatabase : RoomDatabase() {
-    abstract fun favoritesDao(): FavoritesPokemonDao
+    abstract fun favoritesPokemonDao(): FavoritesPokemonDao
 }

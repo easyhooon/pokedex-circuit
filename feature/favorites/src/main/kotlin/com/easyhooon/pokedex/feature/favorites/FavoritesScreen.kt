@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.easyhooon.pokedex.core.common.ObserveAsEvents
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
@@ -35,12 +34,13 @@ import com.easyhooon.pokedex.feature.favorites.viewmodel.FavoritesViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import com.easyhooon.pokedex.core.designsystem.R as designR
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 internal fun FavoritesRoute(
     padding: PaddingValues,
     navigateToFavoritesDetail: (PokemonDetailModel) -> Unit,
-    viewModel: FavoritesViewModel = hiltViewModel(),
+    viewModel: FavoritesViewModel = koinViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val favoritesPokemonList by viewModel.favoritesPokemonList.collectAsStateWithLifecycle(initialValue = emptyList())
