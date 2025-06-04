@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.paging.cachedIn
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.map
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.feature.list_detail.ListDetailScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
@@ -13,6 +14,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class ListPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
@@ -22,13 +25,23 @@ class ListPresenter @AssistedInject constructor(
     @Composable
     override fun present(): ListScreen.State {
         val scope = rememberCoroutineScope()
-        val pokemonList = repository.getPokemonList().cachedIn(scope).collectAsLazyPagingItems()
+        val basePaging = repository.getPokemonList().cachedIn(scope)
+        val favorites = repository.getFavoritesPokemonList()
+            .map { favorites -> favorites.map { pokemon -> pokemon.id } }
+
+        val pagingWithFavorite = androidx.compose.runtime.remember(basePaging, favorites) {
+            combine(basePaging, favorites) { pagingData, favoriteIds ->
+                pagingData.map { pokemon ->
+                    pokemon.copy(isFavorite = favoriteIds.contains(pokemon.getId()))
+                }
+            }
+        }.collectAsLazyPagingItems()
 
         return ListScreen.State(
-            pokemonList = pokemonList,
+            pokemonList = pagingWithFavorite,
         ) { event ->
             when (event) {
-                is ListScreen.Event.OnRetryButtonClick -> pokemonList.retry()
+                is ListScreen.Event.OnRetryButtonClick -> pagingWithFavorite.retry()
                 is ListScreen.Event.OnPokemonItemClick -> {
                     navigator.goTo(ListDetailScreen(name = event.name))
                 }

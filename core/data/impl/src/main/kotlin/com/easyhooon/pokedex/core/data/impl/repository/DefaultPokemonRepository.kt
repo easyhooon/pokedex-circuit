@@ -16,7 +16,6 @@ import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.core.model.PokemonModel
 import com.easyhooon.pokedex.core.network.service.PokemonService
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -28,7 +27,7 @@ internal class DefaultPokemonRepository @Inject constructor(
         val pagingSourceFactory = {
             PokemonPagingSource(service)
         }
-        val pagingDataFlow = Pager(
+        return Pager(
             config = PagingConfig(
                 pageSize = Constants.PAGING_SIZE,
                 enablePlaceholders = true,
@@ -37,16 +36,6 @@ internal class DefaultPokemonRepository @Inject constructor(
         ).flow.map { pagingData ->
             pagingData.map { pokemon ->
                 pokemon.toModel()
-            }
-        }
-        val favoritesIdFlow = dao.getFavoritesPokemonList()
-            .map { favorites -> favorites.map { it.id } }
-        return combine(
-            pagingDataFlow,
-            favoritesIdFlow,
-        ) { pagingData, favoriteIds ->
-            pagingData.map { item: PokemonModel ->
-                item.copy(isFavorite = favoriteIds.contains(item.getId()))
             }
         }
     }
