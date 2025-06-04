@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
-import com.easyhooon.pokedex.favorites_detail.FavoritesDetailScreen
+import com.easyhooon.pokedex.feature.favorites_detail.FavoritesDetailScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.collectAsRetainedState
 import com.slack.circuit.retained.rememberRetained
