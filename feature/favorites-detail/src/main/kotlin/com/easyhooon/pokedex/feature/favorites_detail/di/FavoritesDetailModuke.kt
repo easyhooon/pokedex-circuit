@@ -1,10 +1,6 @@
 package com.easyhooon.pokedex.feature.favorites_detail.di
 
-import com.easyhooon.pokedex.feature.favorites_detail.viewmodel.FavoritesDetailViewModel
-import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
 
-val favoritesDetailModule =
-    module {
-        viewModelOf(::FavoritesDetailViewModel)
-    }
+@Module
+class FavoritesDetailModule

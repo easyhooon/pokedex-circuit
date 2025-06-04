@@ -11,7 +11,8 @@ import org.koin.dsl.KoinConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
-import com.easyhooon.pokedex.di.appModule
+import com.easyhooon.pokedex.di.AppModule
+import org.koin.ksp.generated.*
 
 @OptIn(KoinExperimentalAPI::class)
 class PokedexApplication : Application(), ImageLoaderFactory, KoinStartup {
@@ -32,6 +33,6 @@ class PokedexApplication : Application(), ImageLoaderFactory, KoinStartup {
         KoinConfiguration {
             androidLogger(level = Level.DEBUG)
             androidContext(applicationContext)
-            modules(appModule)
+            modules(AppModule().module)
         }
 }

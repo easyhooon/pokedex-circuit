@@ -1,10 +1,6 @@
 package com.easyhooon.pokedex.feature.list.di
 
-import com.easyhooon.pokedex.feature.list.viewmodel.ListViewModel
-import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
 
-val listModule =
-    module {
-        viewModelOf(::ListViewModel)
-    }
+@Module
+class ListModule

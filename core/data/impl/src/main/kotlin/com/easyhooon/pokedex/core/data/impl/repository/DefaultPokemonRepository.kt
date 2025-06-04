@@ -18,7 +18,9 @@ import com.easyhooon.pokedex.core.network.service.PokemonService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.InternalSerializationApi
+import org.koin.core.annotation.Single
 
+@Single
 class DefaultPokemonRepository(
     private val service: PokemonService,
     private val dao: FavoritesPokemonDao,

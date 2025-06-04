@@ -4,7 +4,8 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.dsl.module
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
@@ -23,29 +24,30 @@ private val jsonConverterFactory = jsonRule.asConverterFactory("application/json
 
 private const val SERVER_BASE_URL = "https://pokeapi.co/api/v2/"
 
-val networkModule = module {
-    single<HttpLoggingInterceptor> {
+@Module
+class NetworkModule {
+    @Single
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor { message ->
             Timber.tag("ApiService").d(message)
         }.apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-    }
 
-    single<OkHttpClient> {
+    @Single
+    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
             .connectTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
             .readTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
             .writeTimeout(MaxTimeoutMillis, TimeUnit.MILLISECONDS)
-            .addInterceptor(get<HttpLoggingInterceptor>())
+            .addInterceptor(interceptor)
             .build()
-    }
 
-    single<Retrofit> {
+    @Single
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(SERVER_BASE_URL)
-            .client(get())
+            .client(client)
             .addConverterFactory(jsonConverterFactory)
             .build()
-    }
 }
