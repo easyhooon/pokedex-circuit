@@ -21,10 +21,11 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 
 @KoinViewModel
 class ListDetailViewModel(
-    private val repository: PokemonRepository,
+    @Provided private val repository: PokemonRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel(), ErrorHandlerActions {
     private val name = savedStateHandle.toRoute<Route.ListDetail>().name

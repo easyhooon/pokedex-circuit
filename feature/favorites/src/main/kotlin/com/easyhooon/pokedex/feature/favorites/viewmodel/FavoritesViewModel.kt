@@ -12,10 +12,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 
 @KoinViewModel
 class FavoritesViewModel(
-    repository: PokemonRepository,
+    @Provided private val repository: PokemonRepository,
 ) : ViewModel() {
     val favoritesPokemonList = repository.getFavoritesPokemonList()
 

@@ -14,10 +14,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 
 @KoinViewModel
 class ListViewModel(
-    repository: PokemonRepository,
+    @Provided private val repository: PokemonRepository,
 ) : ViewModel() {
     private val _uiEvent = Channel<ListUiEvent>()
     val uiEvent: Flow<ListUiEvent> = _uiEvent.receiveAsFlow()

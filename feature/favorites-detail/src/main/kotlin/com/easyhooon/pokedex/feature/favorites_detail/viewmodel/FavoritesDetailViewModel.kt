@@ -19,11 +19,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
+import org.koin.core.annotation.Provided
 import timber.log.Timber
 
 @KoinViewModel
 class FavoritesDetailViewModel(
-    private val repository: PokemonRepository,
+    @Provided private val repository: PokemonRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val pokemon = savedStateHandle.toRoute<Route.FavoritesDetail>(typeMap).pokemon
