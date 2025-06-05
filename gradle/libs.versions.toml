@@ -42,7 +42,7 @@ compose-stable-marker = "1.0.6"
 landscapist = "2.4.7"
 compose-effects = "0.1.1"
 koin = "4.0.4"
-koin-annoations = "2.0.0"
+koin-annotations = "2.0.0"
 
 junit = "4.13.2"
 androidx-junit = "1.2.1"
@@ -94,8 +94,8 @@ koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = 
 koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
 koin-compose-viewmodel-navigation = { group = "io.insert-koin", name = "koin-compose-viewmodel-navigation", version.ref = "koin" }
 koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
-koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annoations" }
-koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-annoations" }
+koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annotations" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-annotations" }
 
 compose-system-ui-controller = { group = "tech.thdev", name = "extensions-compose-system-ui-controller", version.ref = "compose-extensions" }
 compose-keyboard-state = { group = "tech.thdev", name = "extensions-compose-keyboard-state", version.ref = "compose-extensions" }
