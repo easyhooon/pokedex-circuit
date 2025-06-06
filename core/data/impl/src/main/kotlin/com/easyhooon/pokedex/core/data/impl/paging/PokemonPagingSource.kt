@@ -5,8 +5,8 @@ import android.os.Build
 import androidx.annotation.RequiresExtension
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.easyhooon.pokedex.core.data.util.Constants.PAGING_SIZE
-import com.easyhooon.pokedex.core.data.util.Constants.STARTING_PAGE_INDEX
+import com.easyhooon.pokedex.core.data.impl.util.Constants.PAGING_SIZE
+import com.easyhooon.pokedex.core.data.impl.util.Constants.STARTING_PAGE_INDEX
 import com.easyhooon.pokedex.core.network.response.Pokemon
 import com.easyhooon.pokedex.core.network.service.PokemonService
 import timber.log.Timber

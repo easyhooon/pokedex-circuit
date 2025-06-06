@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.core.data.di
+package com.easyhooon.pokedex.core.data.impl.di
 
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.data.impl.repository.DefaultPokemonRepository

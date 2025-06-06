@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.core.data.util
+package com.easyhooon.pokedex.core.data.impl.util
 
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

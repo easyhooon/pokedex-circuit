@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.core.data.mapper
+package com.easyhooon.pokedex.core.data.impl.mapper
 
 import com.easyhooon.pokedex.core.database.entity.PokemonDetailEntity
 import com.easyhooon.pokedex.core.database.entity.PokemonTypeEntity
