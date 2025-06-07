@@ -12,7 +12,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.logger.Level
 import com.easyhooon.pokedex.di.AppModule
-import org.koin.ksp.generated.*
+import org.koin.ksp.generated.module
 
 @OptIn(KoinExperimentalAPI::class)
 class PokedexApplication : Application(), ImageLoaderFactory, KoinStartup {
