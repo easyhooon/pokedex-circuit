@@ -19,12 +19,11 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
+import org.koin.android.ext.android.inject
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
-import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var circuit: Circuit
+    private val circuit: Circuit by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

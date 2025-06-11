@@ -52,13 +52,4 @@ class FavoritesDetailPresenter(
             }
         }
     }
-
-    @CircuitInject(FavoritesDetailScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(
-            screen: FavoritesDetailScreen,
-            navigator: Navigator,
-        ): FavoritesDetailPresenter
-    }
 }

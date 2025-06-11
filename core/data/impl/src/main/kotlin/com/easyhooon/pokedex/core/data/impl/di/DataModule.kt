@@ -11,6 +11,7 @@ import org.koin.core.annotation.Single
 
 @Module(includes = [DaoModule::class, ApiModule::class])
 class DataModule {
+
     @Single
     fun providePokemonRepository(
         service: PokemonService,

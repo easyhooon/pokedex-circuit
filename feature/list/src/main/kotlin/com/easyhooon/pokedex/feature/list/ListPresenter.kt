@@ -44,10 +44,4 @@ class ListPresenter(
             }
         }
     }
-
-    @CircuitInject(ListScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(navigator: Navigator): ListPresenter
-    }
 }

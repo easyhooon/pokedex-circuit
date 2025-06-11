@@ -126,13 +126,4 @@ class ListDetailPresenter(
     override fun setNetworkErrorDialogVisible(flag: Boolean) {
         setNetworkErrorDialogVisibleCallback?.invoke(flag)
     }
-
-    @CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
-    @AssistedFactory
-    fun interface Factory {
-        fun create(
-            screen: ListDetailScreen,
-            navigator: Navigator,
-        ): ListDetailPresenter
-    }
 }
