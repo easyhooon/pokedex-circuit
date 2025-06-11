@@ -10,14 +10,10 @@ import com.slack.circuit.retained.collectAsRetainedState
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.toImmutableList
 
-class FavoritesPresenter @AssistedInject constructor(
-    @Assisted private val navigator: Navigator,
+class FavoritesPresenter(
+    private val navigator: Navigator,
     private val repository: PokemonRepository,
 ) : Presenter<FavoritesScreen.State> {
     @Composable

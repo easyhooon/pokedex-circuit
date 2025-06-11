@@ -1,4 +1,4 @@
-package com.easyhooon.pokedex.di
+package com.easyhooon.pokedex.di.module
 
 import com.easyhooon.pokedex.core.data.impl.di.DataModule
 import com.easyhooon.pokedex.feature.favorites.di.FavoritesModule

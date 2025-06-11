@@ -7,24 +7,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
-import com.easyhooon.pokedex.feature.favorites_detail.R
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class FavoritesDetailPresenter @AssistedInject constructor(
-    @Assisted private val screen: FavoritesDetailScreen,
-    @Assisted private val navigator: Navigator,
+class FavoritesDetailPresenter(
+    private val screen: FavoritesDetailScreen,
+    private val navigator: Navigator,
     private val repository: PokemonRepository,
-    @ApplicationContext private val context: Context,
+    private val context: Context,
 ) : Presenter<FavoritesDetailScreen.State> {
     @Composable
     override fun present(): FavoritesDetailScreen.State {

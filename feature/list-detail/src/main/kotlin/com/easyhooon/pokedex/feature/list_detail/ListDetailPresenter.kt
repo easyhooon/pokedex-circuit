@@ -12,25 +12,19 @@ import com.easyhooon.pokedex.core.common.InsertFavoriteResult
 import com.easyhooon.pokedex.core.common.handleException
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.easyhooon.pokedex.feature.list_detail.R
 import com.skydoves.compose.effects.RememberedEffect
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ListDetailPresenter @AssistedInject constructor(
-    @Assisted private val screen: ListDetailScreen,
-    @Assisted private val navigator: Navigator,
+class ListDetailPresenter(
+    private val screen: ListDetailScreen,
+    private val navigator: Navigator,
     private val repository: PokemonRepository,
-    @ApplicationContext private val context: Context,
+    private val context: Context,
 ) : Presenter<ListDetailScreen.State>, ErrorHandlerActions {
 
     private var setServerErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null

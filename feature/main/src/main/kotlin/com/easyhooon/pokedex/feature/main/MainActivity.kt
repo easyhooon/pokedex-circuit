@@ -19,11 +19,9 @@ import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
 import com.slack.circuit.overlay.ContentWithOverlays
-import dagger.hilt.android.AndroidEntryPoint
 import tech.thdev.compose.exteions.system.ui.controller.rememberExSystemUiController
 import javax.inject.Inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var circuit: Circuit

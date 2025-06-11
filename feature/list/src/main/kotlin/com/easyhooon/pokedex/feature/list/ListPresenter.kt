@@ -10,15 +10,11 @@ import com.easyhooon.pokedex.feature.list_detail.ListDetailScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
-class ListPresenter @AssistedInject constructor(
-    @Assisted private val navigator: Navigator,
+class ListPresenter(
+    private val navigator: Navigator,
     private val repository: PokemonRepository,
 ) : Presenter<ListScreen.State> {
 
