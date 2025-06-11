@@ -28,11 +28,9 @@ import com.easyhooon.pokedex.feature.list.component.LoadErrorScreen
 import com.easyhooon.pokedex.feature.list.component.LoadStateFooter
 import com.easyhooon.pokedex.feature.list.component.LoadingScreen
 import com.easyhooon.pokedex.feature.list.component.PokemonItem
-import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
@@ -50,9 +48,8 @@ data object ListScreen : Screen {
     }
 }
 
-@CircuitInject(ListScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun List(
+fun List(
     state: ListScreen.State,
     modifier: Modifier = Modifier,
 ) {

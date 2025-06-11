@@ -21,11 +21,9 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.favorites.component.FavoritesPokemonItem
-import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.parcelize.Parcelize
@@ -44,9 +42,8 @@ data object FavoritesScreen : Screen {
     }
 }
 
-@CircuitInject(FavoritesScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun Favorites(
+fun Favorites(
     state: FavoritesScreen.State,
     modifier: Modifier = Modifier,
 ) {

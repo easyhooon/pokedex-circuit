@@ -14,10 +14,6 @@ android {
     }
 }
 
-ksp {
-    arg("circuit.codegen.mode", "hilt")
-}
-
 dependencies {
     implementations(
         projects.feature.listDetail,

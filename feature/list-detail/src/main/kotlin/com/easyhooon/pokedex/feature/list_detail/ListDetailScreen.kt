@@ -37,13 +37,10 @@ import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.CircuitUiEvent
 import com.slack.circuit.runtime.CircuitUiState
 import com.slack.circuit.runtime.screen.Screen
-import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.parcelize.Parcelize
-import kotlin.text.Typography.dagger
 import com.easyhooon.pokedex.core.designsystem.R as designR
 
 @Parcelize
@@ -70,9 +67,8 @@ enum class ErrorType {
     SERVER,
 }
 
-@CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
-internal fun ListDetail(
+fun ListDetail(
     state: ListDetailScreen.State,
     modifier: Modifier = Modifier,
 ) {

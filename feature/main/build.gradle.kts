@@ -9,10 +9,6 @@ android {
     namespace = "com.easyhooon.pokedex.feature.main"
 }
 
-ksp {
-    arg("circuit.codegen.mode", "hilt")
-}
-
 dependencies {
     implementations(
         projects.feature.favorites,
