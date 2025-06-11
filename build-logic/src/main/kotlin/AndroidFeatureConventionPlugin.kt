@@ -11,7 +11,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
         applyPlugins(
             "pokedex.android.library",
             "pokedex.android.library.compose",
-            "pokedex.android.hilt",
+            "pokedex.android.koin",
         )
 
         dependencies {

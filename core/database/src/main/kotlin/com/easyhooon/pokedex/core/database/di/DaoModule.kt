@@ -2,15 +2,13 @@ package com.easyhooon.pokedex.core.database.di
 
 import com.easyhooon.pokedex.core.database.FavoritesPokemonDao
 import com.easyhooon.pokedex.core.database.FavoritesPokemonDatabase
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DaoModule {
-    @Provides
+@Module(includes = [DatabaseModule::class])
+class DaoModule {
+
+    @Single
     fun provideFavoritesDao(
         database: FavoritesPokemonDatabase,
     ): FavoritesPokemonDao = database.favoritesDao()

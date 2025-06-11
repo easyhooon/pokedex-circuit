@@ -3,7 +3,7 @@
 plugins {
     alias(libs.plugins.pokedex.android.application)
     alias(libs.plugins.pokedex.android.application.compose)
-    alias(libs.plugins.pokedex.android.hilt)
+    alias(libs.plugins.pokedex.android.koin)
 }
 
 android {
@@ -44,6 +44,7 @@ dependencies {
         libs.androidx.startup,
         libs.timber,
         libs.coil.compose,
+        libs.koin.androidx.startup,
 
         libs.bundles.circuit,
     )

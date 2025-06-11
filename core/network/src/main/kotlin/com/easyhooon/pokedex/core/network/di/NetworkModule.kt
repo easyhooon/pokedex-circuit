@@ -1,19 +1,16 @@
 package com.easyhooon.pokedex.core.network.di
 
 import com.easyhooon.pokedex.core.network.BuildConfig
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.annotation.Module
+import org.koin.core.annotation.Single
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
 
 private const val MaxTimeoutMillis = 15_000L
 
@@ -29,11 +26,9 @@ private val jsonConverterFactory = jsonRule.asConverterFactory("application/json
 private const val SERVER_BASE_URL = "https://pokeapi.co/api/v2/"
 
 @Module
-@InstallIn(SingletonComponent::class)
-internal object NetworkModule {
+class NetworkModule {
 
-    @Singleton
-    @Provides
+    @Single
     internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor { message ->
             Timber.tag("ApiService").d(message)
@@ -46,8 +41,7 @@ internal object NetworkModule {
         }
     }
 
-    @Singleton
-    @Provides
+    @Single
     internal fun providePokemonOkHttpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
     ): OkHttpClient {
@@ -59,8 +53,7 @@ internal object NetworkModule {
             .build()
     }
 
-    @Singleton
-    @Provides
+    @Single
     internal fun providePokemonApiRetrofit(
         okHttpClient: OkHttpClient,
     ): Retrofit {

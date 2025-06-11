@@ -13,7 +13,7 @@ gradlePlugin {
         "android.library" to "AndroidLibraryConventionPlugin",
         "android.library.compose" to "AndroidLibraryComposeConventionPlugin",
         "android.feature" to "AndroidFeatureConventionPlugin",
-        "android.hilt" to "AndroidHiltConventionPlugin",
+        "android.koin" to "AndroidKoinConventionPlugin",
         "android.retrofit" to "AndroidRetrofitConventionPlugin",
         "jvm.kotlin" to "JvmKotlinConventionPlugin",
         "android.room" to "AndroidRoomConventionPlugin",
@@ -40,6 +40,7 @@ dependencies {
     compileOnly(libs.gradle.android)
     compileOnly(libs.gradle.kotlin)
     compileOnly(libs.gradle.androidx.room)
+    compileOnly(libs.gradle.ksp)
     compileOnly(libs.compose.compiler.extension)
 
     compileOnly(files(libs.javaClass.superclass.protectionDomain.codeSource.location))

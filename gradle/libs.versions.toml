@@ -31,7 +31,6 @@ androidx-test-core = "1.6.1"
 androidx-paging = "3.3.6"
 
 desugar-jdk-libs = "2.1.5"
-hilt = "2.55"
 retrofit = "2.11.0"
 okhttp = "5.0.0-alpha.14"
 coil-compose = "2.7.0"
@@ -42,6 +41,8 @@ compose-stable-marker = "1.0.6"
 landscapist = "2.4.7"
 compose-effects = "0.1.1"
 circuit = "0.28.0"
+koin = "4.0.4"
+koin-annotations = "2.0.0"
 
 junit = "4.13.2"
 androidx-junit = "1.2.1"
@@ -51,15 +52,13 @@ androidx-junit = "1.2.1"
 gradle-android = { group = "com.android.tools.build", name = "gradle", version.ref = "android-gradle-plugin" }
 gradle-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin-core" }
 gradle-androidx-room = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "androidx-room" }
+gradle-ksp = { group = "com.google.devtools.ksp", name = "symbol-processing-gradle-plugin", version.ref = "ksp" }
 compose-compiler-extension = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin-core" }
 
 kotlin-ktlint = { group = "com.pinterest", name = "ktlint", version.ref = "kotlin-ktlint-source" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
-
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 
 androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core" }
 androidx-splash = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx-splash" }
@@ -85,6 +84,13 @@ androidx-room-testing = { group = "androidx.room", name = "room-testing", versio
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "androidx-paging" }
 androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "androidx-paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "androidx-paging" }
+
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
+koin-androidx-startup = { group = "io.insert-koin", name = "koin-androidx-startup", version.ref = "koin" }
+koin-annotations = { group = "io.insert-koin", name = "koin-annotations", version.ref = "koin-annotations" }
+koin-ksp-compiler = { group = "io.insert-koin", name = "koin-ksp-compiler", version.ref = "koin-annotations" }
 
 compose-system-ui-controller = { group = "tech.thdev", name = "extensions-compose-system-ui-controller", version.ref = "compose-extensions" }
 compose-keyboard-state = { group = "tech.thdev", name = "extensions-compose-keyboard-state", version.ref = "compose-extensions" }
@@ -134,7 +140,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 
 androidx-room = { id = "androidx.room", version.ref = "androidx-room" }
 
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 # Plugins defined by this project
@@ -143,7 +148,7 @@ pokedex-android-application-compose = { id = "pokedex.android.application.compos
 pokedex-android-library = { id = "pokedex.android.library", version = "unspecified" }
 pokedex-android-library-compose = { id = "pokedex.android.library.compose", version = "unspecified" }
 pokedex-android-feature = { id = "pokedex.android.feature", version = "unspecified" }
-pokedex-android-hilt = { id = "pokedex.android.hilt", version = "unspecified" }
+pokedex-android-koin = { id = "pokedex.android.koin", version = "unspecified" }
 pokedex-android-retrofit = { id = "pokedex.android.retrofit", version = "unspecified" }
 pokedex-android-room = { id = "pokedex.android.room", version = "unspecified" }
 pokedex-jvm-kotlin = { id = "pokedex.jvm.kotlin", version = "unspecified" }

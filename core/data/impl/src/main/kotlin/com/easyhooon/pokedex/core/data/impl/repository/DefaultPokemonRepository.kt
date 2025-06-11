@@ -17,9 +17,10 @@ import com.easyhooon.pokedex.core.model.PokemonModel
 import com.easyhooon.pokedex.core.network.service.PokemonService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
+import org.koin.core.annotation.Single
 
-internal class DefaultPokemonRepository @Inject constructor(
+@Single
+internal class DefaultPokemonRepository(
     private val service: PokemonService,
     private val dao: FavoritesPokemonDao,
 ) : PokemonRepository {
