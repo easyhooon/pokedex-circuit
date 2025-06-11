@@ -13,7 +13,6 @@ import com.easyhooon.pokedex.core.common.handleException
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.skydoves.compose.effects.RememberedEffect
-import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter

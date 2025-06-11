@@ -20,9 +20,9 @@ class CircuitPresenterFactory : Presenter.Factory {
         context: CircuitContext
     ): Presenter<*> {
         return when (screen) {
-            is ListScreen -> ListPresenter(screen, navigator)
+            is ListScreen -> ListPresenter(navigator)
             is ListDetailScreen -> ListDetailPresenter(screen, navigator)
-            is FavoritesScreen -> FavoritesPresenter(screen, navigator)
+            is FavoritesScreen -> FavoritesPresenter(navigator)
             is FavoritesDetailScreen -> FavoritesDetailPresenter(screen, navigator)
             else -> throw Exception("Invalid Screen Detected! :: $screen")
         }

@@ -7,7 +7,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.map
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.feature.list_detail.ListDetailScreen
-import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
 import kotlinx.coroutines.flow.combine
