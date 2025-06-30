@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.pokedex.android.library)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
 }
 
@@ -16,5 +15,4 @@ dependencies {
     compileOnly(
         libs.compose.stable.marker,
     )
-    implementation(libs.kotlinx.serialization.json)
 }
