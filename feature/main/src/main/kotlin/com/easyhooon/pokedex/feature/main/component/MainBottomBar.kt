@@ -34,9 +34,9 @@ import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
 import com.easyhooon.pokedex.core.designsystem.theme.Small14_Mid
-import com.easyhooon.pokedex.feature.favorites.FavoritesScreen
-import com.easyhooon.pokedex.feature.list.ListScreen
 import com.easyhooon.pokedex.feature.main.MainTab
+import com.easyhooon.pokedex.screens.FavoritesScreen
+import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.backstack.SaveableBackStack
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.popUntil

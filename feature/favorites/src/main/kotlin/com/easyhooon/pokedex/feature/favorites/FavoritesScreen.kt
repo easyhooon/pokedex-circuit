@@ -19,35 +19,16 @@ import com.easyhooon.pokedex.core.designsystem.component.LoadingWheel
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
 import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.core.model.PokemonDetailModel
 import com.easyhooon.pokedex.feature.favorites.component.FavoritesPokemonItem
+import com.easyhooon.pokedex.screens.FavoritesScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
-
-@Parcelize
-data object FavoritesScreen : Screen {
-    data class State(
-        val isLoading: Boolean = false,
-        val favoritesPokemonList: ImmutableList<PokemonDetailModel> = persistentListOf(),
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-
-    sealed interface Event : CircuitUiEvent {
-        data class OnPokemonItemClick(val pokemon: PokemonDetailModel) : Event
-    }
-}
 
 @CircuitInject(FavoritesScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun Favorites(
-    state: FavoritesScreen.State,
+    state: FavoritesUiState,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -74,7 +55,7 @@ internal fun Favorites(
 
 @Composable
 internal fun FavoritesContent(
-    state: FavoritesScreen.State,
+    state: FavoritesUiState,
     modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
@@ -91,7 +72,7 @@ internal fun FavoritesContent(
             FavoritesPokemonItem(
                 pokemon = pokemon,
                 onItemClick = {
-                    state.eventSink(FavoritesScreen.Event.OnPokemonItemClick(pokemon))
+                    state.eventSink(FavoritesUiEvent.OnPokemonItemClick(pokemon))
                 },
             )
         }
@@ -103,7 +84,7 @@ internal fun FavoritesContent(
 private fun FavoritesPreview() {
     PokedexTheme {
         Favorites(
-            state = FavoritesScreen.State(eventSink = {}),
+            state = FavoritesUiState(eventSink = {}),
         )
     }
 }

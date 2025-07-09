@@ -17,7 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.PagingData
-import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.easyhooon.pokedex.core.designsystem.DevicePreview
 import com.easyhooon.pokedex.core.designsystem.component.PokedexTopAppBar
@@ -28,32 +27,16 @@ import com.easyhooon.pokedex.feature.list.component.LoadErrorScreen
 import com.easyhooon.pokedex.feature.list.component.LoadStateFooter
 import com.easyhooon.pokedex.feature.list.component.LoadingScreen
 import com.easyhooon.pokedex.feature.list.component.PokemonItem
+import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
-
-@Parcelize
-data object ListScreen : Screen {
-    data class State(
-        val pokemonList: LazyPagingItems<PokemonModel>,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-
-    sealed interface Event : CircuitUiEvent {
-        data object OnRetryButtonClick : Event
-        data class OnPokemonItemClick(val name: String) : Event
-    }
-}
 
 @CircuitInject(ListScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun List(
-    state: ListScreen.State,
+    state: ListUiState,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -76,7 +59,7 @@ internal fun List(
 
 @Composable
 internal fun ListContent(
-    state: ListScreen.State,
+    state: ListUiState,
     modifier: Modifier = Modifier,
 ) {
     val isLoading = state.pokemonList.loadState.refresh is LoadState.Loading
@@ -90,7 +73,7 @@ internal fun ListContent(
         isError -> {
             LoadErrorScreen(
                 onRetryButtonClick = {
-                    state.eventSink(ListScreen.Event.OnRetryButtonClick)
+                    state.eventSink(ListUiEvent.OnRetryButtonClick)
                 },
             )
         }
@@ -112,7 +95,7 @@ internal fun ListContent(
                     PokemonItem(
                         pokemon = pokemon,
                         onPokemonItemClick = {
-                            state.eventSink(ListScreen.Event.OnPokemonItemClick(pokemon.name))
+                            state.eventSink(ListUiEvent.OnPokemonItemClick(pokemon.name))
                         },
                     )
                 }
@@ -124,7 +107,7 @@ internal fun ListContent(
                 LoadStateFooter(
                     loadState = state.pokemonList.loadState.append,
                     onRetryClick = {
-                        state.eventSink(ListScreen.Event.OnRetryButtonClick)
+                        state.eventSink(ListUiEvent.OnRetryButtonClick)
                     },
                 )
             }
@@ -151,7 +134,7 @@ private fun ListPreview() {
 
     PokedexTheme {
         List(
-            state = ListScreen.State(
+            state = ListUiState(
                 pokemonList = mockPokemonListPagingItems,
                 eventSink = {},
             ),

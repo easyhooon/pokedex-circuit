@@ -20,8 +20,6 @@ ksp {
 
 dependencies {
     implementations(
-        projects.feature.favoritesDetail,
-
         libs.kotlinx.collections.immutable,
 
         libs.timber,

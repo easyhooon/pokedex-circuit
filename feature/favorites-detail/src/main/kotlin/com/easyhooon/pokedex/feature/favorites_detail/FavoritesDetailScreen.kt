@@ -34,36 +34,15 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.easyhooon.pokedex.feature.favorites_detail.R
+import com.easyhooon.pokedex.screens.FavoritesDetailScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
-import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
-
-@Parcelize
-data class FavoritesDetailScreen(
-    val pokemon: PokemonDetailModel,
-) : Screen {
-    data class State(
-        val isLoading: Boolean = false,
-        val pokemon: PokemonDetailModel = PokemonDetailModel(),
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-
-    sealed interface Event : CircuitUiEvent {
-        data object OnBackClick : Event
-        data object OnFavoritesButtonClick : Event
-    }
-}
 
 @CircuitInject(FavoritesDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun FavoritesDetail(
-    state: FavoritesDetailScreen.State,
+    state: FavoritesDetailUiState,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -78,7 +57,7 @@ internal fun FavoritesDetail(
                 navigationIconRes = designR.drawable.ic_arrow_back_gray,
                 containerColor = Color.Transparent,
                 onNavigationClick = {
-                    state.eventSink(FavoritesDetailScreen.Event.OnBackClick)
+                    state.eventSink(FavoritesDetailUiEvent.OnBackClick)
                 },
             )
 
@@ -94,7 +73,7 @@ internal fun FavoritesDetail(
 @Suppress("ImplicitDefaultLocale")
 @Composable
 internal fun FavoritesDetailContent(
-    state: FavoritesDetailScreen.State,
+    state: FavoritesDetailUiState,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -169,7 +148,7 @@ internal fun FavoritesDetailContent(
         Spacer(modifier = Modifier.height(32.dp))
         PokedexOutlinedButton(
             onClick = {
-                state.eventSink(FavoritesDetailScreen.Event.OnFavoritesButtonClick)
+                state.eventSink(FavoritesDetailUiEvent.OnFavoritesButtonClick)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -198,7 +177,7 @@ internal fun FavoritesDetailContent(
 private fun FavoritesDetailScreenPreview() {
     PokedexTheme {
         FavoritesDetail(
-            state = FavoritesDetailScreen.State(eventSink = {}),
+            state = FavoritesDetailUiState(eventSink = {}),
         )
     }
 }

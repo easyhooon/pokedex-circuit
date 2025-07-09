@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.easyhooon.pokedex.core.designsystem.component.PokedexScaffold
-import com.easyhooon.pokedex.feature.list.ListScreen
 import com.easyhooon.pokedex.feature.main.component.MainBottomBar
+import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.Circuit
 import com.slack.circuit.foundation.CircuitCompositionLocals

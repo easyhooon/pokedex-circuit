@@ -36,44 +36,15 @@ import com.easyhooon.pokedex.core.designsystem.component.TopAppBarNavigationType
 import com.easyhooon.pokedex.core.designsystem.theme.Large20_SemiBold
 import com.easyhooon.pokedex.core.designsystem.theme.Medium16_Mid
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.easyhooon.pokedex.feature.list_detail.R
+import com.easyhooon.pokedex.screens.ListDetailScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
-import com.slack.circuit.runtime.CircuitUiEvent
-import com.slack.circuit.runtime.CircuitUiState
-import com.slack.circuit.runtime.screen.Screen
 import dagger.hilt.android.components.ActivityRetainedComponent
-import kotlinx.parcelize.Parcelize
 import com.easyhooon.pokedex.core.designsystem.R as designR
-
-@Parcelize
-data class ListDetailScreen(
-    val name: String,
-) : Screen {
-    data class State(
-        val isLoading: Boolean = false,
-        val pokemon: PokemonDetailModel = PokemonDetailModel(),
-        val isNetworkErrorDialogVisible: Boolean = false,
-        val isServerErrorDialogVisible: Boolean = false,
-        val eventSink: (Event) -> Unit,
-    ) : CircuitUiState
-
-    sealed interface Event : CircuitUiEvent {
-        data object OnBackClick : Event
-        data object OnFavoritesButtonClick : Event
-        data class OnRetryButtonClick(val errorType: ErrorType) : Event
-    }
-}
-
-enum class ErrorType {
-    NETWORK,
-    SERVER,
-}
 
 @CircuitInject(ListDetailScreen::class, ActivityRetainedComponent::class)
 @Composable
 internal fun ListDetail(
-    state: ListDetailScreen.State,
+    state: ListDetailUiState,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -88,7 +59,7 @@ internal fun ListDetail(
                 navigationIconRes = designR.drawable.ic_arrow_back_gray,
                 containerColor = Color.Transparent,
                 onNavigationClick = {
-                    state.eventSink(ListDetailScreen.Event.OnBackClick)
+                    state.eventSink(ListDetailUiEvent.OnBackClick)
                 },
             )
 
@@ -103,7 +74,7 @@ internal fun ListDetail(
         if (state.isNetworkErrorDialogVisible) {
             NetworkErrorDialog(
                 onRetryClick = {
-                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.NETWORK))
+                    state.eventSink(ListDetailUiEvent.OnRetryButtonClick(ErrorType.NETWORK))
                 },
             )
         }
@@ -111,7 +82,7 @@ internal fun ListDetail(
         if (state.isServerErrorDialogVisible) {
             ServerErrorDialog(
                 onRetryClick = {
-                    state.eventSink(ListDetailScreen.Event.OnRetryButtonClick(ErrorType.SERVER))
+                    state.eventSink(ListDetailUiEvent.OnRetryButtonClick(ErrorType.SERVER))
                 },
             )
         }
@@ -121,7 +92,7 @@ internal fun ListDetail(
 @Suppress("ImplicitDefaultLocale")
 @Composable
 internal fun ListDetailContent(
-    state: ListDetailScreen.State,
+    state: ListDetailUiState,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -196,7 +167,7 @@ internal fun ListDetailContent(
         Spacer(modifier = Modifier.height(32.dp))
         PokedexOutlinedButton(
             onClick = {
-                state.eventSink(ListDetailScreen.Event.OnFavoritesButtonClick)
+                state.eventSink(ListDetailUiEvent.OnFavoritesButtonClick)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -225,7 +196,7 @@ internal fun ListDetailContent(
 private fun ListDetailScreenPreview() {
     PokedexTheme {
         ListDetail(
-            state = ListDetailScreen.State(eventSink = {}),
+            state = ListDetailUiState(eventSink = {}),
         )
     }
 }

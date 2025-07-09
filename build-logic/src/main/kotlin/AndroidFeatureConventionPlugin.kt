@@ -19,6 +19,7 @@ internal class AndroidFeatureConventionPlugin : BuildLogicConventionPlugin(
             implementation(project(path = ":core:common"))
             implementation(project(path = ":core:designsystem"))
             implementation(project(path = ":core:model"))
+            implementation(project(path = ":screens"))
 
             implementation(libs.compose.effects)
             implementation(libs.bundles.circuit)
