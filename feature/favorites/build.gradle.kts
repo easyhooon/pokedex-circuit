@@ -8,10 +8,6 @@ plugins {
 
 android {
     namespace = "com.easyhooon.pokedex.feature.favorites"
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 ksp {
@@ -20,8 +16,6 @@ ksp {
 
 dependencies {
     implementations(
-        projects.feature.favoritesDetail,
-
         libs.kotlinx.collections.immutable,
 
         libs.timber,

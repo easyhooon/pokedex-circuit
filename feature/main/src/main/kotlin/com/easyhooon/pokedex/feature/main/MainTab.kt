@@ -1,8 +1,8 @@
 package com.easyhooon.pokedex.feature.main
 
 import androidx.annotation.DrawableRes
-import com.easyhooon.pokedex.feature.favorites.FavoritesScreen
-import com.easyhooon.pokedex.feature.list.ListScreen
+import com.easyhooon.pokedex.screens.FavoritesScreen
+import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.runtime.screen.Screen
 import com.easyhooon.pokedex.core.designsystem.R as designR
 

@@ -12,7 +12,7 @@ import com.easyhooon.pokedex.core.common.InsertFavoriteResult
 import com.easyhooon.pokedex.core.common.handleException
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
 import com.easyhooon.pokedex.core.model.PokemonDetailModel
-import com.easyhooon.pokedex.feature.list_detail.R
+import com.easyhooon.pokedex.screens.ListDetailScreen
 import com.skydoves.compose.effects.RememberedEffect
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.retained.rememberRetained
@@ -31,13 +31,13 @@ class ListDetailPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val repository: PokemonRepository,
     @ApplicationContext private val context: Context,
-) : Presenter<ListDetailScreen.State>, ErrorHandlerActions {
+) : Presenter<ListDetailUiState>, ErrorHandlerActions {
 
     private var setServerErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
     private var setNetworkErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
 
     @Composable
-    override fun present(): ListDetailScreen.State {
+    override fun present(): ListDetailUiState {
         val scope = rememberCoroutineScope()
         var isLoading by rememberRetained { mutableStateOf(false) }
         var pokemon by rememberRetained { mutableStateOf(PokemonDetailModel()) }
@@ -99,7 +99,7 @@ class ListDetailPresenter @AssistedInject constructor(
         }
 
         fun refresh(error: ErrorType) {
-            getPokemonDetail(screen.name)
+            getPokemonDetail(screen.pokemonName)
 
             when (error) {
                 ErrorType.NETWORK -> isNetworkErrorDialogVisible = false
@@ -107,20 +107,20 @@ class ListDetailPresenter @AssistedInject constructor(
             }
         }
 
-        RememberedEffect(screen.name) {
-            getPokemonDetail(screen.name)
+        RememberedEffect(screen.pokemonName) {
+            getPokemonDetail(screen.pokemonName)
         }
 
-        return ListDetailScreen.State(
+        return ListDetailUiState(
             isLoading = isLoading,
             pokemon = pokemon,
             isNetworkErrorDialogVisible = isNetworkErrorDialogVisible,
             isServerErrorDialogVisible = isServerErrorDialogVisible,
         ) { event ->
             when (event) {
-                is ListDetailScreen.Event.OnBackClick -> navigator.pop()
-                is ListDetailScreen.Event.OnFavoritesButtonClick -> addFavoritePokemon(pokemon)
-                is ListDetailScreen.Event.OnRetryButtonClick -> refresh(error = event.errorType)
+                is ListDetailUiEvent.OnBackClick -> navigator.pop()
+                is ListDetailUiEvent.OnFavoritesButtonClick -> addFavoritePokemon(pokemon)
+                is ListDetailUiEvent.OnRetryButtonClick -> refresh(error = event.errorType)
             }
         }
     }

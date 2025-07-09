@@ -36,4 +36,6 @@ include(
     ":feature:list",
     ":feature:favorites-detail",
     ":feature:main",
+
+    ":screens",
 )

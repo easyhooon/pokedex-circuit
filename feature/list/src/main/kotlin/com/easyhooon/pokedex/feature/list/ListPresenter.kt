@@ -6,7 +6,8 @@ import androidx.paging.cachedIn
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.map
 import com.easyhooon.pokedex.core.data.api.repository.PokemonRepository
-import com.easyhooon.pokedex.feature.list_detail.ListDetailScreen
+import com.easyhooon.pokedex.screens.ListDetailScreen
+import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.codegen.annotations.CircuitInject
 import com.slack.circuit.runtime.Navigator
 import com.slack.circuit.runtime.presenter.Presenter
@@ -20,10 +21,10 @@ import kotlinx.coroutines.flow.map
 class ListPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
     private val repository: PokemonRepository,
-) : Presenter<ListScreen.State> {
+) : Presenter<ListUiState> {
 
     @Composable
-    override fun present(): ListScreen.State {
+    override fun present(): ListUiState {
         val scope = rememberCoroutineScope()
         val basePaging = repository.getPokemonList().cachedIn(scope)
         val favorites = repository.getFavoritesPokemonList()
@@ -37,13 +38,13 @@ class ListPresenter @AssistedInject constructor(
             }
         }.collectAsLazyPagingItems()
 
-        return ListScreen.State(
+        return ListUiState(
             pokemonList = pagingWithFavorite,
         ) { event ->
             when (event) {
-                is ListScreen.Event.OnRetryButtonClick -> pagingWithFavorite.retry()
-                is ListScreen.Event.OnPokemonItemClick -> {
-                    navigator.goTo(ListDetailScreen(name = event.name))
+                is ListUiEvent.OnRetryButtonClick -> pagingWithFavorite.retry()
+                is ListUiEvent.OnPokemonItemClick -> {
+                    navigator.goTo(ListDetailScreen(pokemonName = event.pokemonName))
                 }
             }
         }
