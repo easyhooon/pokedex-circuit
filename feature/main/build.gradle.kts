@@ -15,11 +15,6 @@ ksp {
 
 dependencies {
     implementations(
-        projects.feature.favorites,
-        projects.feature.favoritesDetail,
-        projects.feature.list,
-        projects.feature.listDetail,
-
         libs.kotlinx.collections.immutable,
 
         libs.androidx.activity.compose,
