@@ -8,10 +8,6 @@ plugins {
 
 android {
     namespace = "com.easyhooon.pokedex.feature.favorites_detail"
-
-    buildFeatures {
-        buildConfig = true
-    }
 }
 
 ksp {
