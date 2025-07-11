@@ -1,35 +1,33 @@
 package com.easyhooon.pokedex.feature.main.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
@@ -39,8 +37,6 @@ import com.easyhooon.pokedex.screens.FavoritesScreen
 import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.backstack.SaveableBackStack
 import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.popUntil
-import com.slack.circuit.runtime.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -51,97 +47,84 @@ internal fun MainBottomBar(
     modifier: Modifier = Modifier,
 ) {
     val visible = shouldShowBottomBar(backStack)
-    val currentTab = getCurrentTab(backStack)
     val tabs = MainTab.entries.toImmutableList()
 
-    MainBottomBar(
-        visible = visible,
-        tabs = tabs,
-        currentTab = currentTab,
-        onTabSelected = { tab ->
-            navigator.popUntilOrGoTo(tab.screen)
-        },
-        modifier = modifier,
-    )
+    if (visible) {
+        MainBottomBarContent(
+            tabs = tabs,
+            backStack = backStack,
+            navigator = navigator,
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable
-internal fun MainBottomBar(
-    visible: Boolean,
+private fun MainBottomBarContent(
     tabs: ImmutableList<MainTab>,
-    currentTab: MainTab?,
-    onTabSelected: (MainTab) -> Unit,
+    backStack: SaveableBackStack,
+    navigator: Navigator,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + slideIn { IntOffset(0, it.height) },
-        exit = fadeOut() + slideOut { IntOffset(0, it.height) },
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
     ) {
-        Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-            Column {
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-                Row(
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .fillMaxWidth()
-                        .height(64.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    tabs.forEach { tab ->
-                        MainBottomBarItem(
-                            tab = tab,
-                            selected = tab == currentTab,
-                            onClick = {
-                                if (tab != currentTab) {
-                                    onTabSelected(tab)
-                                }
-                            },
-                        )
-                    }
-                }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
+                .height(64.dp)
+        ) {
+            tabs.forEach { tab ->
+                val selected = tab.screen == backStack.topRecord?.screen
+                BottomTabItem(
+                    tab = tab,
+                    selected = selected,
+                    onClick = {
+                        navigator.resetRoot(tab.screen, saveState = true, restoreState = true)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
             }
         }
     }
 }
 
 @Composable
-private fun RowScope.MainBottomBarItem(
+private fun BottomTabItem(
     tab: MainTab,
     selected: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = Modifier
-            .weight(1f)
-            .fillMaxHeight()
-            .selectable(
-                selected = selected,
-                indication = null,
-                role = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            ),
-        contentAlignment = Alignment.Center,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .testTag("bottom_tab_${tab.label}")
+            .semantics { this.selected = selected }
+            .height(64.dp)
+            .clickable { onClick() }
+            .padding(horizontal = 8.dp, vertical = 8.dp),
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Icon(
-                imageVector = if (selected) ImageVector.vectorResource(tab.selectedIconResId)
-                else ImageVector.vectorResource(tab.iconResId),
-                contentDescription = tab.contentDescription,
-                tint = Color.Unspecified,
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = tab.label,
-                color = if (selected) Color(0xFF1F1F1F) else Color(0xFF9E9E9E),
-                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                style = Small14_Mid,
-            )
-        }
+        Icon(
+            imageVector = if (selected) ImageVector.vectorResource(tab.selectedIconResId)
+            else ImageVector.vectorResource(tab.iconResId),
+            contentDescription = tab.contentDescription,
+            tint = Color.Unspecified,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = tab.label,
+            color = if (selected) Color(0xFF1F1F1F) else Color(0xFF9E9E9E),
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+            style = Small14_Mid,
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+        )
     }
 }
 
@@ -149,20 +132,22 @@ private fun RowScope.MainBottomBarItem(
 @Composable
 private fun MainBottomBarPreview() {
     PokedexTheme {
-        MainBottomBar(
-            visible = true,
-            tabs = MainTab.entries.toImmutableList(),
-            currentTab = MainTab.LIST,
-            onTabSelected = {},
-        )
-    }
-}
-
-fun Navigator.popUntilOrGoTo(screen: Screen) {
-    if (screen in peekBackStack()) {
-        popUntil { it == screen }
-    } else {
-        goTo(screen)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
+                .background(MaterialTheme.colorScheme.surface)
+        ) {
+            MainTab.entries.forEach { tab ->
+                BottomTabItem(
+                    tab = tab,
+                    selected = tab == MainTab.LIST,
+                    onClick = {},
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
     }
 }
 
@@ -170,12 +155,4 @@ fun Navigator.popUntilOrGoTo(screen: Screen) {
 private fun shouldShowBottomBar(backStack: SaveableBackStack): Boolean {
     val currentScreen = backStack.topRecord?.screen
     return currentScreen is ListScreen || currentScreen is FavoritesScreen
-}
-
-@Composable
-private fun getCurrentTab(backStack: SaveableBackStack): MainTab? {
-    val currentScreen = backStack.topRecord?.screen
-    return currentScreen?.let { screen ->
-        MainTab.entries.find { it.screen::class == currentScreen::class }
-    }
 }
