@@ -9,6 +9,9 @@ abstract class PokedexScreen(val name: String) : Screen {
 }
 
 @Parcelize
+data object BottomNavigationScreen : PokedexScreen(name = "BottomNavigation()")
+
+@Parcelize
 data object ListScreen : PokedexScreen(name = "List()")
 
 @Parcelize

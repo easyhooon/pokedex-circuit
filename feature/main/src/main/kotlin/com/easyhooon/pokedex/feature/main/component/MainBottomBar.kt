@@ -1,75 +1,49 @@
 package com.easyhooon.pokedex.feature.main.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.semantics.selected
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.core.designsystem.theme.Small14_Mid
-import com.easyhooon.pokedex.feature.main.MainTab
-import com.easyhooon.pokedex.screens.FavoritesScreen
-import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.backstack.SaveableBackStack
-import com.slack.circuit.runtime.Navigator
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun MainBottomBar(
-    navigator: Navigator,
-    backStack: SaveableBackStack,
-    modifier: Modifier = Modifier,
-) {
-    val visible = shouldShowBottomBar(backStack)
-    val tabs = MainTab.entries.toImmutableList()
-
-    if (visible) {
-        MainBottomBarContent(
-            tabs = tabs,
-            backStack = backStack,
-            navigator = navigator,
-            modifier = modifier,
-        )
-    }
-}
-
-@Composable
-private fun MainBottomBarContent(
     tabs: ImmutableList<MainTab>,
-    backStack: SaveableBackStack,
-    navigator: Navigator,
+    currentTab: MainTab?,
+    onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
         HorizontalDivider(color = MaterialTheme.colorScheme.outline)
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -77,17 +51,17 @@ private fun MainBottomBarContent(
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.surface)
                 .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
-                .height(64.dp)
+                .height(64.dp),
         ) {
             tabs.forEach { tab ->
-                val selected = tab.screen == backStack.topRecord?.screen
-                BottomTabItem(
+                MainBottomBarItem(
                     tab = tab,
-                    selected = selected,
+                    selected = tab == currentTab,
                     onClick = {
-                        navigator.resetRoot(tab.screen, saveState = true, restoreState = true)
+                        if (tab != currentTab) {
+                            onTabSelected(tab)
+                        }
                     },
-                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -95,36 +69,48 @@ private fun MainBottomBarContent(
 }
 
 @Composable
-private fun BottomTabItem(
+private fun RowScope.MainBottomBarItem(
     tab: MainTab,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .testTag("bottom_tab_${tab.label}")
-            .semantics { this.selected = selected }
-            .height(64.dp)
-            .clickable { onClick() }
-            .padding(horizontal = 8.dp, vertical = 8.dp),
+    Box(
+        modifier = Modifier
+            .weight(1f)
+            .fillMaxHeight()
+            .selectable(
+                selected = selected,
+                indication = null,
+                role = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = onClick,
+            ),
+        contentAlignment = Alignment.Center,
     ) {
-        Icon(
-            imageVector = if (selected) ImageVector.vectorResource(tab.selectedIconResId)
-            else ImageVector.vectorResource(tab.iconResId),
-            contentDescription = tab.contentDescription,
-            tint = Color.Unspecified,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = tab.label,
-            color = if (selected) Color(0xFF1F1F1F) else Color(0xFF9E9E9E),
-            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-            style = Small14_Mid,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Icon(
+                imageVector = if (selected) ImageVector.vectorResource(tab.selectedIconResId)
+                else ImageVector.vectorResource(tab.iconResId),
+                contentDescription = tab.contentDescription,
+                tint = Color.Unspecified,
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = stringResource(tab.labelResId),
+                color = if (selected) Color(0xFF1F1F1F) else Color(0xFF9E9E9E),
+                fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+            )
+        }
+    }
+}
+
+@Composable
+fun getCurrentTab(backStack: SaveableBackStack): MainTab? {
+    val currentScreen = backStack.topRecord?.screen
+    return currentScreen?.let {
+        MainTab.entries.find { it.screen::class == currentScreen::class }
     }
 }
 
@@ -132,27 +118,10 @@ private fun BottomTabItem(
 @Composable
 private fun MainBottomBarPreview() {
     PokedexTheme {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
-                .background(MaterialTheme.colorScheme.surface)
-        ) {
-            MainTab.entries.forEach { tab ->
-                BottomTabItem(
-                    tab = tab,
-                    selected = tab == MainTab.LIST,
-                    onClick = {},
-                    modifier = Modifier.weight(1f)
-                )
-            }
-        }
+        MainBottomBar(
+            tabs = MainTab.entries.toImmutableList(),
+            currentTab = MainTab.LIST,
+            onTabSelected = {},
+        )
     }
-}
-
-@Composable
-private fun shouldShowBottomBar(backStack: SaveableBackStack): Boolean {
-    val currentScreen = backStack.topRecord?.screen
-    return currentScreen is ListScreen || currentScreen is FavoritesScreen
 }
