@@ -2,7 +2,6 @@ package com.easyhooon.pokedex.feature.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -39,21 +38,19 @@ internal fun List(
     state: ListUiState,
     modifier: Modifier = Modifier,
 ) {
-    Box {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background),
-        ) {
-            PokedexTopAppBar(
-                navigationType = TopAppBarNavigationType.None,
-                title = stringResource(R.string.list_title),
-                navigationIconRes = designR.drawable.ic_arrow_back_gray,
-                containerColor = Color.Transparent,
-            )
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+    ) {
+        PokedexTopAppBar(
+            navigationType = TopAppBarNavigationType.None,
+            title = stringResource(R.string.list_title),
+            navigationIconRes = designR.drawable.ic_arrow_back_gray,
+            containerColor = Color.Transparent,
+        )
 
-            ListContent(state = state)
-        }
+        ListContent(state = state)
     }
 }
 
@@ -82,7 +79,7 @@ internal fun ListContent(
             columns = GridCells.Fixed(3),
             modifier = modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {

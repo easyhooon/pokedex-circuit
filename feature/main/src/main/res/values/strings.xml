@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="list">목록</string>
+    <string name="favorites">즐겨찾기</string>
+</resources>

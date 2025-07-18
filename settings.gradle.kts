@@ -37,5 +37,5 @@ include(
     ":feature:favorites-detail",
     ":feature:main",
 
-    ":screens",
+    ":feature:screens",
 )

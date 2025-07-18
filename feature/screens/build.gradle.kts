@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.easyhooon.pokedex.screens"
+    namespace = "com.easyhooon.pokedex.feature.screens"
 }
 
 dependencies {

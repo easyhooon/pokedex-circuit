@@ -1,10 +1,5 @@
 package com.easyhooon.pokedex.feature.main.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -12,10 +7,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,80 +26,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.easyhooon.pokedex.core.designsystem.ComponentPreview
 import com.easyhooon.pokedex.core.designsystem.theme.PokedexTheme
-import com.easyhooon.pokedex.core.designsystem.theme.Small14_Mid
-import com.easyhooon.pokedex.feature.main.MainTab
-import com.easyhooon.pokedex.screens.FavoritesScreen
-import com.easyhooon.pokedex.screens.ListScreen
 import com.slack.circuit.backstack.SaveableBackStack
-import com.slack.circuit.runtime.Navigator
-import com.slack.circuit.runtime.popUntil
-import com.slack.circuit.runtime.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 internal fun MainBottomBar(
-    navigator: Navigator,
-    backStack: SaveableBackStack,
-    modifier: Modifier = Modifier,
-) {
-    val visible = shouldShowBottomBar(backStack)
-    val currentTab = getCurrentTab(backStack)
-    val tabs = MainTab.entries.toImmutableList()
-
-    MainBottomBar(
-        visible = visible,
-        tabs = tabs,
-        currentTab = currentTab,
-        onTabSelected = { tab ->
-            navigator.popUntilOrGoTo(tab.screen)
-        },
-        modifier = modifier,
-    )
-}
-
-@Composable
-internal fun MainBottomBar(
-    visible: Boolean,
     tabs: ImmutableList<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + slideIn { IntOffset(0, it.height) },
-        exit = fadeOut() + slideOut { IntOffset(0, it.height) },
-        modifier = modifier,
-    ) {
-        Box(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-            Column {
-                HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-                Row(
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .fillMaxWidth()
-                        .height(64.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    tabs.forEach { tab ->
-                        MainBottomBarItem(
-                            tab = tab,
-                            selected = tab == currentTab,
-                            onClick = {
-                                if (tab != currentTab) {
-                                    onTabSelected(tab)
-                                }
-                            },
-                        )
-                    }
-                }
+    Column(modifier = modifier.fillMaxWidth()) {
+        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Bottom))
+                .height(64.dp),
+        ) {
+            tabs.forEach { tab ->
+                MainBottomBarItem(
+                    tab = tab,
+                    selected = tab == currentTab,
+                    onClick = {
+                        if (tab != currentTab) {
+                            onTabSelected(tab)
+                        }
+                    },
+                )
             }
         }
     }
@@ -136,12 +98,19 @@ private fun RowScope.MainBottomBarItem(
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = tab.label,
+                text = stringResource(tab.labelResId),
                 color = if (selected) Color(0xFF1F1F1F) else Color(0xFF9E9E9E),
                 fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
-                style = Small14_Mid,
             )
         }
+    }
+}
+
+@Composable
+fun getCurrentTab(backStack: SaveableBackStack): MainTab? {
+    val currentScreen = backStack.topRecord?.screen
+    return currentScreen?.let {
+        MainTab.entries.find { it.screen::class == currentScreen::class }
     }
 }
 
@@ -150,32 +119,9 @@ private fun RowScope.MainBottomBarItem(
 private fun MainBottomBarPreview() {
     PokedexTheme {
         MainBottomBar(
-            visible = true,
             tabs = MainTab.entries.toImmutableList(),
             currentTab = MainTab.LIST,
             onTabSelected = {},
         )
-    }
-}
-
-fun Navigator.popUntilOrGoTo(screen: Screen) {
-    if (screen in peekBackStack()) {
-        popUntil { it == screen }
-    } else {
-        goTo(screen)
-    }
-}
-
-@Composable
-private fun shouldShowBottomBar(backStack: SaveableBackStack): Boolean {
-    val currentScreen = backStack.topRecord?.screen
-    return currentScreen is ListScreen || currentScreen is FavoritesScreen
-}
-
-@Composable
-private fun getCurrentTab(backStack: SaveableBackStack): MainTab? {
-    val currentScreen = backStack.topRecord?.screen
-    return currentScreen?.let { screen ->
-        MainTab.entries.find { it.screen::class == currentScreen::class }
     }
 }
