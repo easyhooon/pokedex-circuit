@@ -28,6 +28,7 @@ class FavoritesDetailPresenter @AssistedInject constructor(
 ) : Presenter<FavoritesDetailUiState> {
     @Composable
     override fun present(): FavoritesDetailUiState {
+        Timber.d("## FavoritesDetailPresenter present()")
         val scope = rememberCoroutineScope()
         val isLoading by rememberRetained { mutableStateOf(false) }
 

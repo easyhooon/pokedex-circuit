@@ -32,12 +32,12 @@ class ListDetailPresenter @AssistedInject constructor(
     private val repository: PokemonRepository,
     @ApplicationContext private val context: Context,
 ) : Presenter<ListDetailUiState>, ErrorHandlerActions {
-
     private var setServerErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
     private var setNetworkErrorDialogVisibleCallback: ((Boolean) -> Unit)? = null
 
     @Composable
     override fun present(): ListDetailUiState {
+        Timber.d("## ListDetailPresenter present()")
         val scope = rememberCoroutineScope()
         var isLoading by rememberRetained { mutableStateOf(false) }
         var pokemon by rememberRetained { mutableStateOf(PokemonDetailModel()) }

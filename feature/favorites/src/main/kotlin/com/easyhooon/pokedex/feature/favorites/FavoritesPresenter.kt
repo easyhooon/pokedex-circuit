@@ -16,6 +16,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.components.ActivityRetainedComponent
 import kotlinx.collections.immutable.toImmutableList
 import com.easyhooon.pokedex.screens.FavoritesScreen
+import timber.log.Timber
 
 class FavoritesPresenter @AssistedInject constructor(
     @Assisted private val navigator: Navigator,
@@ -23,6 +24,7 @@ class FavoritesPresenter @AssistedInject constructor(
 ) : Presenter<FavoritesUiState> {
     @Composable
     override fun present(): FavoritesUiState {
+        Timber.d("## FavoritesPresenter present()")
         val isLoading by rememberRetained { mutableStateOf(false) }
         val favoritesPokemonList by repository.getFavoritesPokemonList().collectAsRetainedState(emptyList())
 
